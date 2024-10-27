@@ -1,0 +1,9 @@
+#!/bin/bash
+
+setxkbmap -option "ctrl:nocaps"
+setxkbmap -layout us,br
+setxkbmap -option 'grp:alt_space_toggle'
+
+#the following line breaks the i3wm command "win+shift+space"
+#setxkbmap -layout us,br -option grp:win_space_toggle
+

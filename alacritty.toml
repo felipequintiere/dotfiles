@@ -1,0 +1,12 @@
+[general]
+import = [
+#	"~/.config/alacritty/themes/aura.toml"
+#	"~/.config/alacritty/themes/dark_pride.toml"
+#	"~/.config/alacritty/themes/cyber_punk_neon.toml"
+	"~/.config/alacritty/themes/falcon.toml" 
+
+#	"~/.config/alacritty/themes/carbonfox.toml" #not that cool
+]
+
+[font]
+size = 14.00
