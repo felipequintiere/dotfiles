@@ -1,0 +1,11 @@
+sudo pacman -S xorg-xinput
+sudo pacman -S xorg-xrandr
+
+xrandr --output HDMI-A-1 --brightness 1
+
+
+cd /var/lib/flatpak/exports/bin
+sudo ln -s /var/lib/flatpak/exports/bin/filename1 /usr/bin/filename2
+
+sudo mount /dev/sdb3 /media/u1
+sudo pacman -R noto-fonts-cjk #more than 290 mb
