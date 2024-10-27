@@ -1,0 +1,14 @@
+#!/bin/bash
+#sudo pacman -S xorg-xinput
+#sudo apt install xinput
+
+mouse_id=$(xinput | grep "Logitech USB Optical Mouse" | grep -o "id=[0-9]*" | cut -d'=' -f2)
+
+# If device ID is found, disable mouse acceleration
+if [ -n "$mouse_id" ]; then
+    xinput set-prop "$mouse_id" "libinput Accel Profile Enabled" 0 1 0
+#    echo "Mouse acceleration disabled for Logitech mouse (ID: $mouse_id)."
+#else
+#    echo "Logitech mouse not found. Mouse acceleration could not be disabled."
+fi
+
