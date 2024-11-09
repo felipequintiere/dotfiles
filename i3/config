@@ -25,7 +25,7 @@ exec_always ~/.settings/tablet_bp &
 bindsym $mod+Shift+f exec flameshot gui
 
 
-exec_always picom -f
+exec picom -f
 #exec ~/.fehbg &
 #exec /usr/bin/otd-daemon &
 
