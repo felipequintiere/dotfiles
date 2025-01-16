@@ -1,0 +1,2 @@
+in case the huion tablet driver is not needed, 
+run the command 'chmod a-x /usr/lib/huiontablet'

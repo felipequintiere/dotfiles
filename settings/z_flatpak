@@ -1,0 +1,2 @@
+cd /var/lib/flatpak/exports/bin
+sudo ln -s /var/lib/flatpak/exports/bin/filename1 /usr/bin/filename1

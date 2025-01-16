@@ -1,0 +1,26 @@
+$ cd /boot/loader/entries/
+
+Change the .conf file, adding the text 'amdgpu.dc=0' in the last parameter. The contents of the file should be as follows:
+
+########
+
+$ cat /boot/loader/entries/archlinux.conf
+
+# Created by: archinstall
+# Created on: 2025
+title   Arch Linux (linux)
+linux   /vmlinuz-linux
+initrd  /initramfs-linux.img
+options root=PARTUUID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx zswap.enabled=0 rw rootfstype=ext4 amdgpu.dc=0
+
+########
+
+obs.: the .conf file can be in the format 'date.conf'.
+obs.: the xxxx domain is going to vary according to your system.
+
+
+
+Then update the bootloader with the command 'sudo bootctl update'.
+
+Afterwards, you may check whether or not the changes have been applied
+using the command 'cat /proc/cmdline'

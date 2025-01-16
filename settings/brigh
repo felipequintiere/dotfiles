@@ -1,0 +1,24 @@
+#!/bin/bash
+# sudo pacman -S xorg-xrandr
+
+echo " "
+echo "Enter a value for brightness in the form 0.n:"
+read n
+
+# define mininum brightness value:
+m=1
+
+echo " "
+
+if [ $n -lt $m ];then
+	echo "The value chosen is below the minimum brightness threshold!"
+	echo "0.$n < 0.$m"
+else
+	xrandr --output HDMI-A-1 --brightness 0.$n
+
+	echo "previous: $(grep xrandr $HOME/.settings/brightness)"
+	echo "#!/bin/bash" > $HOME/.settings/brightness
+	echo "xrandr --output HDMI-A-1 --brightness 0.$n" >> $HOME/.settings/brightness
+	echo " "
+fi
+

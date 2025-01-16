@@ -1,0 +1,9 @@
+#!/bin/bash
+#sudo pacman -S xorg-xrandr
+
+monitor_id=$(xrandr | grep " connected" | grep -o "HDMI-A-[0-9]")
+xrandr --output "$monitor_id" --mode 1920x1080 --rate 74.97
+
+# turn off screensaver
+xset s off
+xset -dpms

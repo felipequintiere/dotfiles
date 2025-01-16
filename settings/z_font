@@ -1,0 +1,2 @@
+sudo mount /dev/sdb3 /media/u1
+sudo pacman -R noto-fonts-cjk #more than 290 mb

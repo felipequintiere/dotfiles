@@ -1,0 +1,9 @@
+$ cd /etc/default/
+
+open the 'grub' file and add the parameter "amdgpu.dc=0" on the
+GRUB_CMDLINE_LINUX=""
+
+# amdgpu.dc=0 to enable xcalib -i -a and xrandr-invert-colors AUR
+GRUB_CMDLINE_LINUX="amdgpu.dc=0"
+
+sudo gru-update or grub-mkconfig -o /boot/grub/grub.cfg

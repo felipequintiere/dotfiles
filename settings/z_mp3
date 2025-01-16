@@ -1,0 +1,1 @@
+ffmpeg -i 'sound.mp4' -vn -acodec libmp3lame -ac 2 -ab 160k -ar 48000 Converted.mp3

@@ -1,0 +1,286 @@
+
+# I'm using Mod4 as Mod1 and viceversa: 'setkxkbmap -option "altwin:swap_alt_win"'
+set $mod Mod4
+
+
+
+###############################################################
+# AUTOSTART
+###############################################################
+
+exec_always ~/.config/settings/monitor &
+exec_always ~/.config/settings/screensaver &
+exec ~/.config/settings/brightness &
+exec picom -f &
+exec ~/.fehbg &
+
+exec_always ~/.config/settings/tablet_13_16 &
+#exec /usr/bin/otd-daemon &
+#exec_always ~/.config/settings/tablet & 
+#exec_always ~/.config/settings/tablet_bp &
+exec_always ~/.config/settings/keyboard &
+exec_always ~/.config/settings/mouse &
+
+bindsym $mod+Shift+f exec flameshot gui
+bindsym Mod1+Shift+s exec flameshot gui
+#bindsym $mod+Shift+f exec flatpak run org.flameshot.Flameshot gui
+
+# arch repository flameshot (sudo pacman -S flameshot)
+# flathub flameshot (flatpak install flathub org.flameshot.Flameshot)
+
+
+
+###############################################################
+# APPEARANCE
+###############################################################
+
+font pango:monospace 16
+
+# class                 border    backgr.   text      indicator   child_border
+client.focused          #ffffffff #00000000 #ffffffff #ffffff80   #ffffffcc
+client.focused_inactive #00000000 #00000000 #ffffffff #00000080   #00000080
+client.unfocused        #00000000 #00000000 #ffffffff #00000080   #00000080
+client.urgent           #00000000 #00000000 #ffffffff #00000080   #90000080
+client.placeholder      #00000000 #00000000 #ffffffff #00000080   #00000080
+#client.background       #ffffffff
+
+bar {
+        status_command i3status -c ~/.config/i3status/i3status.conf
+        i3bar_command i3bar --transparency
+        font pango:monospace 20
+        position top
+        tray_padding 0px
+	separator_symbol ":|:"
+        #tray_output none
+        #mode hide
+        #mode invisible
+	#modifier $mod
+	strip_workspace_numbers yes
+
+        #obs.: picom is needed to enable transparency
+
+        colors {
+                background #000000cc
+                separator #a8a8a8cc
+
+                # class                 border          background      text
+                focused_workspace       #000000cc       #000000cc       #ffffffff
+                inactive_workspace      #000000cc       #000000cc       #ffffff90
+                urgent_workspace        #000000cc       #000000cc       #ffffff00
+        }
+}
+default_border pixel 2
+#default_border normal
+#default_border none
+
+# Configure $px of space between windows and to the screen edges.
+#gaps inner 5px
+gaps inner 10px
+
+# Configure an additional $px of extra space to the screen edges,
+#gaps outer 5px
+gaps outer 5px
+
+# Overwrite gaps to 0 on workspace 3
+workspace 3 gaps inner 0
+workspace 3 gaps outer 0
+
+# Only enable outer gaps when there is exactly one window or split container on the workspace.
+#smart_gaps inverse_outer
+smart_gaps on
+
+
+
+###############################################################
+# ARBITRARY COMMANDS FOR SPECIFIC WINDOWS
+###############################################################
+
+for_window [class="PacketTracer"] floating enable
+for_window [class="discord"] floating enable
+#for_window [class="anki"] floating enable
+
+
+
+###############################################################
+# CUSTOM CONFIG
+###############################################################
+
+floating_modifier $mod
+floating_minimum_size 100 x 100
+#floating_maximum_size <width> x <height>
+
+#hide_edge_borders none|vertical|horizontal|both|smart|smart_no_gaps
+hide_edge_borders smart
+
+#focus_follows_mouse yes|no
+focus_follows_mouse yes
+
+tiling_drag modifier
+
+
+
+###############################################################
+# KEYBINDS
+###############################################################
+
+# adjust volume (pactl):
+bindsym $mod+Shift+x exec $HOME/.config/settings/inc_vol
+bindsym $mod+Shift+z exec $HOME/.config/settings/dec_vol
+
+# invert colors (xcalib):
+bindsym $mod+i exec $HOME/.config/settings/color_inversion
+
+# change alacritty's theme:
+bindsym $mod+Control+p exec $HOME/.config/alacritty/theme_up.sh
+bindsym $mod+Control+n exec $HOME/.config/alacritty/theme_down.sh
+
+bindsym $mod+c kill
+bindsym $mod+b split h
+bindsym $mod+r floating toggle
+bindsym $mod+e focus mode_toggle
+
+# Move the currently focused window to the scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the next scratchpad windows or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $mod+minus scratchpad show
+
+bindsym $mod+control+t reload
+bindsym $mod+control+r restart
+
+#bindsym $mod+control+h resize shrink width 10 px or 10 ppt
+#bindsym $mod+control+j resize grow height 10 px or 10 ppt
+#bindsym $mod+control+k resize shrink height 10 px or 10 ppt
+#bindsym $mod+control+l resize grow width 10 px or 10 ppt
+
+bindsym $mod+control+h resize shrink width 100 px 
+bindsym $mod+control+j resize grow height 100 px 
+bindsym $mod+control+k resize shrink height 100 px
+bindsym $mod+control+l resize grow width 100 px
+
+
+bindsym $mod+control+q exec i3-msg exit
+
+#bindsym $mod+Return exec alacritty -e htop
+bindsym $mod+Return exec alacritty
+
+bindsym $mod+d exec --no-startup-id dmenu_run
+# bindcode $mod+40 exec "rofi -modi drun,run -show drun"
+# bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
+
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+#bindsym $mod+h split h
+bindsym $mod+v split v
+
+bindsym $mod+f fullscreen toggle
+
+#bindsym $mod+s layout stacking
+#bindsym $mod+w layout tabbed
+#bindsym $mod+e layout toggle split
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+p focus parent
+
+# focus the child container
+#bindsym $mod+a focus child
+bindsym $mod+a focus child
+
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+#bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+#bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+mode "resize" {
+        bindsym h resize shrink width 100 px or 100 ppt
+        bindsym j resize grow height 100 px or 100 ppt
+        bindsym k resize shrink height 100 px or 100 ppt
+        bindsym l resize grow width 100 px or 100 ppt
+
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+#bindsym $mod+r mode "resize"
+
+
+
+###############################################################
+#  GENERAL
+###############################################################
+
+# Start XDG autostart .desktop files using dex. See also
+# https://wiki.archlinux.org/index.php/XDG_Autostart
+exec --no-startup-id dex --autostart --environment i3
+
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status

@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# https://wiki.archlinux.org/title/Graphics_tablet
+# sudo pacman -S xf86-input-wacom
+# sudo pacman -S usbutils
+# sudo pacman -S xorg-xev
+
+# create a file in /etc/X11/xorg.conf.d, where VID:PID is your USB ID as seen by lsusb
+# sudo  touch /etc/X11/xorg.conf.d/10-tablet.conf
+# cat ./10-tablet.conf
+# Section "InputClass"
+#     Identifier "Tablet"
+#     Driver "wacom"
+#     MatchDevicePath "/dev/input/event*"
+#     MatchUSBID "VID:PID" #in this case, VID:PID = 256c:006d
+# EndSection
+
+# xsetwacom list devices
+# lsusb
+# xev -event button
+
+### 1
+# [arch@archlinux .settings]$ xsetwacom list devices
+# HID 256c:006d Touch Strip pad   	id: 9	type: PAD
+# HID 256c:006d Dial pad          	id: 10	type: PAD
+# HID 256c:006d Pen stylus        	id: 11	type: STYLUS
+# HID 256c:006d Pad pad           	id: 12	type: PAD
+
+### 2 (example: identify the pen's buttons  
+# [arch@archlinux ~]$ xev -event button
+# Outer window is 0x1800001, inner window is 0x1800002
+#
+# ButtonPress event, serial 25, synthetic NO, window 0x1800001,
+#     root 0x3d6, subw 0x1800002, time 220414, (41,42), root:(1005,75),
+#     state 0x0, button 2, same_screen YES
+#
+# ButtonRelease event, serial 25, synthetic NO, window 0x1800001,
+#     root 0x3d6, subw 0x1800002, time 220578, (44,43), root:(1008,76),
+#     state 0x200, button 2, same_screen YES
+# ^C
+
+# 11 is the id seen on the output of xsetwacom list devices, it is the id of the HID 256c:006d Pen stylus
+xsetwacom set 11 Button 2 "key +ctrl +Shift p -Shift -ctrl"
+xsetwacom set 11 Button 3 "key +ctrl +Shift e -Shift -ctrl"
+
+# 11 is the id  seen on the output of xsetwacom list devices, it is the id of the HID 256c:006d Pen stylus        	id: 11	type: STYLUS
+xsetwacom set 11 Area 0 0 32000 18000
+
+# 12 is the id seem on the output of xsetwacom list devices, it is the id of the HID 256c:006d Pad pad
+
+xsetwacom set 12 Button 1 "key +ctrl +Shift + -Shift -ctrl"
+xsetwacom set 12 Button 2 "key +ctrl - -ctrl"
+xsetwacom set 12 Button 3 "key +ctrl +Shift a -Shift -ctrl"
+xsetwacom set 12 Button 8 "key +ctrl +Shift g -Shift -ctrl"
+xsetwacom set 12 Button 9 "key +ctrl +Shift z -Shift -ctrl"
+xsetwacom set 12 Button 10 "key +ctrl z -ctrl"
