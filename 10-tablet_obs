@@ -1,0 +1,3 @@
+the 10-tablet.conf should be stored at /etc/X11/xorg.conf.d/10-tablet.conf
+
+https://wiki.archlinux.org/title/Graphics_tablet
