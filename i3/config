@@ -137,7 +137,7 @@ bindsym $mod+Control+n exec $HOME/.config/alacritty/theme_down.sh
 bindsym $mod+c kill
 bindsym $mod+b split h
 bindsym $mod+r floating toggle
-bindsym $mod+e focus mode_toggle
+bindsym $mod+s focus mode_toggle
 
 # Move the currently focused window to the scratchpad
 bindsym $mod+Shift+minus move scratchpad
@@ -173,6 +173,9 @@ bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
+
+bindsym $mod+e focus right
+bindsym $mod+Shift+e focus left
 
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
