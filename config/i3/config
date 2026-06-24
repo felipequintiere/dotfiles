@@ -1,0 +1,245 @@
+# ======================================
+# i3-specific configuration
+# these settings apply only to i3wm and may not be compatible with sway
+# ======================================
+
+# I'm using Mod4 as Mod1 and viceversa: 'setkxkbmap -option "altwin:swap_alt_win"'
+#set $mod Mod1
+set $mod Mod4
+
+# dmenu
+set $normbgcolor #000000
+set $normfgcolor #ff00ff
+set $selbgcolor #000000
+set $selfgcolor #00ff00
+# window borders
+set $normbordercolor #000000
+set $selbordercolor #ff00ff
+set $inacbordercolor #444444
+set $urgentcolor #ee0080
+
+set $font_family monospace
+#set $font_family Hack
+set $font_size 8
+font pango:$font_family $font_size
+
+# old #be00ee
+# class                 border              background         text                indicator          child_border
+client.focused          $selbordercolor     $selbordercolor    $normbordercolor    $selbordercolor    $selbordercolor
+client.focused_inactive $inacbordercolor    $inacbordercolor   $normbordercolor    $inacbordercolor   $inacbordercolor client.unfocused        $normbordercolor    $normbordercolor   $selbordercolor     $normbordercolor   $normbordercolor
+client.urgent           $urgentcolor        $urgentcolor       $normbordercolor    $urgentcolor       $urgentcolor
+client.placeholder      $selbordercolor     $selbordercolor    $normbordercolor    $selbordercolor    $selbordercolor
+client.background       $normbgcolor
+
+bar {
+	id bar-1
+	status_command i3status -c ~/.config/i3status/i3status.conf
+	#i3bar_command i3bar --transparency
+	# note: 'i3bar_command' is not sway compatible
+	font pango:$font_family $font_size
+
+	colors {
+		background $normbgcolorb3
+		statusline #eeeeee
+		separator $normfgcolor
+
+		#:'<,'>s/b3/xx/g
+		# class            #border             #background         #text
+		focused_workspace  $normbgcolorb3      $normbgcolorb3      $selfgcolorb3
+		active_workspace   #222222b3           #aaaaaab3           #555555b3
+		inactive_workspace $normbgcolorb3      $normbgcolorb3      #888888b3
+		urgent_workspace   $urgentcolorb3      $urgentcolorb3      #000000b3
+		binding_mode       $normbgcolorb3      $normbgcolorb3      $urgentcolorb3
+	}
+
+	#mode hide
+	#mode invisible
+	#position top
+	tray_output none
+	tray_padding 0 px
+	separator_symbol ":|:"
+	#strip_workspace_numbers yes
+
+	#height 18
+	# do not use height restrictions if using different scales,
+	# refer to ~/.Xresources
+}
+# --------------------------------------
+
+
+
+# --------------------------------------
+#exec --no-startup-id dunst --config ~/.config/dunst/dunstrc
+
+#exec_always ~/.config/i3/.dmenu_colors.sh
+#exec --no-startup-id picom -f
+#exec --no-startup-id ~/.fehbg
+#exec --no-startup-id feh --randomize --bg-fill ~/.config/wallpaper/
+#exec --no-startup-id xsetroot -solid "$normbgcolor"
+
+exec --no-startup-id emacs --daemon
+#exec --no-startup-id flameshot
+
+exec --no-startup-id ~/.config/settings/.x11_brightness.sh
+exec_always --no-startup-id ~/.config/settings/x11_monitor.sh
+exec_always --no-startup-id ~/.config/settings/x11_screensaver.sh
+exec_always --no-startup-id ~/.config/settings/x11_keyboard.sh
+exec_always --no-startup-id ~/.config/settings/x11_mouse.sh
+exec_always --no-startup-id ~/.config/settings/graphics_tablet/x11_tablet_xournallpp.sh
+#exec --no-startup-id /usr/bin/otd-daemon
+exec_always --no-startup-id sh -c "echo '1' > $HOME/.config/i3/.toggle_i3bar_log"
+	# 0: you'll need the 'mode invisible' on the bar config
+	# 1: you'll need the 'mode dock' on the bar config (the default)
+# --------------------------------------
+
+
+
+# --------------------------------------
+bindsym $mod+Control+x exec ~/.config/settings/x11_brightness_up.sh
+bindsym $mod+Control+z exec ~/.config/settings/x11_brightness_down.sh
+
+bindsym $mod+Return exec --no-startup-id xterm
+bindsym $mod+Shift+Return exec --no-startup-id sh -c 'xterm -e tmux'
+
+bindsym $mod+Control+g exec --no-startup-id \
+	sh -c \
+	'maim -s | tee ~/.screenshot/$(date +%Hh_%Mmin_%Ssec).png | xclip -selection clipboard -t image/png'
+bindsym $mod+Shift+g exec --no-startup-id \
+	sh -c \
+	'maim -s -b 2 -q | xclip -selection clipboard -t image/png'
+
+# use 'floating_modifier $mod normal' on sway
+floating_modifier $mod
+
+# actually, 'exec i3-msg' works on sway - restart doesn't
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+q exec "i3-nagbar -t warning -m 'do you really wanna exit i3?' -B 'yes' 'i3-msg exit'"
+
+
+
+set $modx meta-ex
+mode $modx {
+	bindsym $mod+b split h, mode default
+	bindsym $mod+h split h, mode default
+	bindsym $mod+v split v, mode default
+
+	#bindsym $mod+Shift+b bar mode toggle
+	#bindsym $mod+Shift+b bar hidden_state toggle
+	bindsym $mod+Shift+b exec --no-startup-id ~/.config/i3/.toggle_i3bar.sh, mode default
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym Control+c mode "default"
+	bindsym Control+bracketleft mode "default"
+	bindsym Control+g mode "default"
+}
+bindsym $mod+x mode $modx
+
+mode "menu" {
+	bindsym $mod+d exec --no-startup-id \
+		dmenu_run -i \
+		-fn "$font_family:size=$font_size" \
+		-nb "$normbgcolor" \
+		-nf "$normfgcolor" \
+		-sb "$selbgcolor" \
+		-sf "$selfgcolor", mode default
+
+	bindsym $mod+p exec --no-startup-id \
+		dmenu_run -i \
+		-fn "$font_family:size=$font_size" \
+		-nb "$normbgcolor" \
+		-nf "$normfgcolor" \
+		-sb "$selbgcolor" \
+		-sf "$selfgcolor", mode default
+
+	bindsym $mod+r exec --no-startup-id \
+		~/.config/i3/dmenu/dmenu_zathura.sh, mode default
+	bindsym r exec --no-startup-id \
+		~/.config/i3/dmenu/dmenu_zathura.sh, mode default
+
+	bindsym $mod+w exec --no-startup-id \
+		~/.config/i3/dmenu/dmenu_xournalpp.sh, mode default
+	bindsym w exec --no-startup-id \
+		~/.config/i3/dmenu/dmenu_xournalpp.sh, mode default
+
+	bindsym $mod+t exec --no-startup-id \
+		~/.config/i3/dmenu/dmenu_tablet.sh, mode default
+	bindsym t exec --no-startup-id \
+		~/.config/i3/dmenu/dmenu_tablet.sh, mode default
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym Control+c mode "default"
+	bindsym Control+bracketleft mode "default"
+	bindsym Control+g mode "default"
+}
+bindsym $mod+p mode "menu"
+# --------------------------------------
+
+
+
+# --------------------------------------
+#exec --no-startup-id firefox
+#for_window [class="firefox-esr"] floating enable
+#assign [class="firefox-esr"] 3
+
+#exec--no-startup-id emacs
+#assign [class="Emacs"] 2
+for_window [class="Emacs"] mark e
+for_window [class="Emacs" title="Speedbar"] mark "speedbar", border normal
+for_window [class="Emacs" title="Speedbar"] resize set width 300 px
+
+#exec --no-startup-id xournalpp
+#assign [class="Com.github.xournalpp.xournalpp"] 3
+for_window [class="Com.github.xournalpp.xournalpp"] mark x
+
+#-----
+
+for_window [title=".*javaex.*"] mark j, border normal, floating enable
+for_window [class=".*XTerm" title=".*codev.*"] mark c, border normal, floating enable, resize set 1000 800
+
+#exec --no-startup-id alacritty --title dropdown
+#exec --no-startup-id alacritty --class dropdown
+#for_window [class="dropdown"] floating enable, move scratchpad, resize set 800 500
+
+for_window [class="virt-manager"] floating enable
+for_window [class="virtualbox manager"] floating enable
+for_window [class="packettracer"] floating enable
+
+for_window [class="org.gnome.Nautilus"] floating enable
+for_window [class="ColorPicker"] floating enable
+
+for_window [class="steam"] floating enable
+for_window [class="discord"] floating enable
+# --------------------------------------
+
+
+
+# Start XDG autostart .desktop files using dex. See also
+# https://wiki.archlinux.org/index.php/XDG_Autostart
+exec --no-startup-id dex --autostart --environment i3
+
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+
+
+# ======================================
+# shared i3/sway configuration
+# ======================================
+include ~/.config/i3/shared_config

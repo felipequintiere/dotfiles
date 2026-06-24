@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# 41.2 Invoking ‘emacsclient’
+emacsclient -c -a ''

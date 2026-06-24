@@ -1,0 +1,294 @@
+# shared i3/sway configuration
+# ======================================
+
+# for firefox
+set $browser firefox
+set $browser_cmd --new-window
+
+
+# --------------------------------------
+# adjust volume (pactl)
+bindsym $mod+Shift+x exec ~/.config/settings/vol_inc_pactl.sh
+bindsym $mod+Shift+z exec ~/.config/settings/vol_dec_pactl.sh
+
+# adjust volume (amixer)
+#bindsym $mod+Shift+x exec ~/.config/settings/vol_inc_amixer.sh
+#bindsym $mod+Shift+z exec ~/.config/settings/vol_dec_amixer.sh
+# --------------------------------------
+
+
+
+# --------------------------------------
+show_marks yes
+
+title_align center
+for_window [all] title_window_icon on
+
+default_border pixel 2
+#default_border normal
+#smart_gaps on
+hide_edge_borders smart
+
+gaps inner 0
+gaps outer 0
+
+workspace 6 gaps inner 0
+workspace 7 gaps inner 0
+workspace 7 gaps outer 0
+
+floating_minimum_size 100 x 100
+#floating_maximum_size 1000 x 800
+floating_maximum_size 1920 x 1080
+# --------------------------------------
+
+
+
+# --------------------------------------
+tiling_drag modifier
+focus_follows_mouse yes
+#popup_during_fullscreen smart
+popup_during_fullscreen all
+
+# scratchpad configuration
+bindsym $mod+Control+s move scratchpad
+bindsym $mod+Shift+s move scratchpad
+bindsym $mod+s scratchpad show
+
+# sticky floating windows
+# note: sticky only works on floating windows
+bindsym $mod+q floating enable; sticky toggle
+
+bindsym $mod+c kill
+bindsym $mod+g fullscreen toggle
+bindsym $mod+r floating toggle
+bindsym $mod+Control+w focus mode_toggle
+#bindsym $mod+space focus mode_toggle    # it's used by setxkbmap
+#bindsym Mod1+space focus mode_toggle
+#
+# toggle between tabbed and split
+bindsym $mod+t layout toggle tabbed split
+
+# custom 'alt+tab'
+bindsym $mod+o focus next
+bindsym $mod+Shift+o focus prev
+bindsym $mod+w focus next
+bindsym $mod+Shift+w focus prev
+#bindsym Mod1+Tab focus next
+#bindsym Mod1+Shift+Tab focus prev
+
+# change workspaces
+#bindsym $mod+n workspace next
+#bindsym $mod+p workspace prev
+bindsym $mod+f exec ~/.config/i3/.workspace_next.sh
+bindsym $mod+a exec ~/.config/i3/.workspace_previous.sh
+
+# move current focused window to next/previous workspace
+bindsym $mod+Shift+f exec --no-startup-id ~/.config/i3/.move_to_next_workspace.sh
+bindsym $mod+Shift+a exec --no-startup-id ~/.config/i3/.move_to_previous_workspace.sh
+
+
+# come back to last workspace with the same keystroke
+#workspace_auto_back_and_forth yes
+# --------------------------------------
+
+
+
+#---------------------------------------
+# VIM-like marks (mark/goto)
+#---------------------------------------
+#mark [--add|--replace] [--toggle] <identifier>
+#[con_mark="identifier"] focus
+#unmark <identifier>
+
+# single character marks:
+# read 1 character and mark the current window with this character
+#bindsym $mod+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
+bindsym $mod+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: ', border normal
+
+# read 1 character and go to the window with the character
+bindsym $mod+grave exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
+bindsym $mod+apostrophe exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
+
+# multi character marks:
+set $i_length 10
+bindsym $mod+Shift+m exec i3-input -F 'mark %s' -l $i_length -P 'Mark: ', border normal
+bindsym $mod+Shift+grave exec i3-input -F '[con_mark="%s"] focus' -l $i_length -P 'Goto: '
+bindsym $mod+Shift+apostrophe exec i3-input -F '[con_mark="%s"] focus' -l $i_length -P 'Goto: '
+# --------------------------------------
+
+
+
+# --------------------------------------
+# MODES
+# --------------------------------------
+mode "evoker" {
+	#bindsym $mod+a focus parent, mode default
+	#bindsym $mod+d focus child, mode default
+	#bindsym a focus parent, mode default
+	#bindsym d focus child, mode default
+
+	# x11
+	bindsym $mod+x mode "x11"
+	#bindsym $mod+r mode "x11"
+	# wayland
+	bindsym $mod+w mode "wayland"
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym Control+c mode "default"
+	bindsym Control+bracketleft mode "default"
+	bindsym Control+g mode "default"
+}
+bindsym $mod+e mode "evoker"
+
+
+
+# AUX MODES
+mode "x11" {
+	# --------------------------------------
+	# i3 specific settings - not supported by sway, comment out if using sway
+
+	# invert colors (xcalib)
+	# note: on my desktop, a GRUB/systemd parameter is required
+	# refer to 'grub_amdgpu' and 'systemd_amdgpu' in ~/.config/settings/man'
+	bindsym $mod+Shift+r exec --no-startup-id sh -c 'xcalib -i -a', mode default
+	bindsym Shift+r exec --no-startup-id sh -c 'xcalib -i -a', mode default
+	
+	# invert colors (picom)
+	bindsym $mod+Control+r exec --no-startup-id ~/.config/i3/.picom_window_invert_i3.sh, mode default
+	bindsym Control+r exec --no-startup-id ~/.config/i3/.picom_window_invert_i3.sh, mode default
+	# --------------------------------------
+	
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym Control+c mode "default"
+	bindsym Control+bracketleft mode "default"
+	bindsym Control+g mode "default"
+}
+mode "wayland" {
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym Control+c mode "default"
+	bindsym Control+bracketleft mode "default"
+	bindsym Control+g mode "default"
+}
+
+
+# www
+bindsym $mod+v mode "www"
+mode "www"{
+	bindsym $mod+a mode "ai"
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym Control+c mode "default"
+	bindsym Control+g mode "default"
+	bindsym Control+bracketleft mode "default"
+}
+mode "ai"{
+	# open deepseek
+	bindsym $mod+d exec $browser $browser_cmd https://www.chat.deepseek.com/, mode default
+	bindsym d exec firefox $browser_cmd https://chat.deepseek.com/, mode default
+
+	# open chatgpt
+	bindsym $mod+c exec $browser $browser_cmd https://chatgpt.com/, mode default
+	bindsym c exec $browser $browser_cmd https://chatgpt.com/, mode default
+
+	# open claude
+	bindsym $mod+v exec $browser $browser_cmd https://chat.chatbotapp.ai/?model=claude, mode default
+	bindsym v exec $browser $browser_cmd https://chat.chatbotapp.ai/?model=claude, mode default
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym Control+c mode "default"
+	bindsym Control+g mode "default"
+	bindsym Control+bracketleft mode "default"
+}
+# --------------------------------------
+
+
+
+# --------------------------------------
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+bindsym $mod+Control+h resize shrink width 100
+bindsym $mod+Control+j resize grow height 100
+bindsym $mod+Control+k resize shrink height 100
+bindsym $mod+Control+l resize grow width 100
+
+bindsym $mod+Shift+h move left 100
+bindsym $mod+Shift+j move down 100
+bindsym $mod+Shift+k move up 100
+bindsym $mod+Shift+l move right 100
+
+bindsym $mod+Control+Left resize shrink width 10
+bindsym $mod+Control+Down resize grow height 10
+bindsym $mod+Control+Up resize shrink height 10
+bindsym $mod+Control+Right resize grow width 10
+
+bindsym $mod+Shift+Left move left 10
+bindsym $mod+Shift+Down move down 10
+bindsym $mod+Shift+Up move up 10
+bindsym $mod+Shift+Right move right 10
+
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+#bindsym $mod+1 workspace $ws1
+#bindsym $mod+2 workspace $ws2
+#bindsym $mod+3 workspace $ws3
+#bindsym $mod+4 workspace $ws4
+#bindsym $mod+5 workspace $ws5
+#bindsym $mod+6 workspace $ws6
+#bindsym $mod+7 workspace $ws7
+#bindsym $mod+8 workspace $ws8
+#bindsym $mod+9 workspace $ws9
+#bindsym $mod+0 workspace $ws10
+#bindsym $mod+Shift+1 move container to workspace $ws1
+#bindsym $mod+Shift+2 move container to workspace $ws2
+#bindsym $mod+Shift+3 move container to workspace $ws3
+#bindsym $mod+Shift+4 move container to workspace $ws4
+#bindsym $mod+Shift+5 move container to workspace $ws5
+#bindsym $mod+Shift+6 move container to workspace $ws6
+#bindsym $mod+Shift+7 move container to workspace $ws7
+#bindsym $mod+Shift+8 move container to workspace $ws8
+#bindsym $mod+Shift+9 move container to workspace $ws9
+#bindsym $mod+Shift+0 move container to workspace $ws10
+

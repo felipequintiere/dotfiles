@@ -1,0 +1,168 @@
+"note: run ':source %' to apply the changes without restarting vim
+"e $MYVIMRC to jump to this file
+
+set nocompatible               " needed to enable netrw
+filetype plugin on             " needed to enable netrw
+"note: 'nocompatible' (nocp) disables Vi compatibility mode (enables Vim features)
+
+set hidden                     " allows switching buffers without saving
+" to make vim’s working directory follows the file’s directory
+"set autochdir
+" note: some plugins and workflows rely on a stable working directory;
+" because of that I avoid using 'autochdir' and just use ':find X<TAB>'
+" or ':e X<TAB>' instead
+
+set noic
+set hlsearch
+set incsearch
+highlight clear Search
+highlight Search cterm=reverse
+highlight IncSearch ctermbg=white ctermfg=black " ct: color terminal
+" default (run :highlight (In)Search):
+"Search         xxx term=reverse ctermfg=15 ctermbg=4 guibg=Yellow
+"IncSearch      xxx term=reverse cterm=reverse ctermfg=0 ctermbg=11 gui=reverse
+
+syntax on                       " enables syntax highlighting
+filetype indent on              " loads identention rules for each filetpe (.py, .c, .sh, ...)
+
+set tabstop=8                   " number of spaces that a <Tab> counts for
+set shiftwidth=8               " how many spaces >> and << use
+set noexpandtab
+"set expandtab                   " convert tabs to spaces
+
+"set number
+"set relativenumber
+
+"colorscheme elflord
+set t_Co=16
+
+" to make vim to paste copied text from the external program with just p
+" doing =*p or =+p (or "*p or "+p) can be cumbersome
+"set clipboard=unnamed
+" note: it will only work if your vim was compiled with clipboard support,
+" check with 'vim --version | grep clipboard'
+
+
+
+" ===============================
+" keybinds
+" ===============================
+let mapleader = " "
+"inoremap jk <Esc>
+"inoremap jj <Esc>
+
+" to emulate emacs keybinds
+"
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
+inoremap <C-b> <Left>
+inoremap <C-f> <Right>
+inoremap <C-d> <Del>
+inoremap <C-k> <C-o>D
+"
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
+cnoremap <C-d> <Del>
+
+
+
+" ===============================
+" netrw
+" ===============================
+let g:netrw_banner = 0
+nnoremap <c-x><c-f> <Esc>:Lex<cr>:vertical resize30<cr>
+
+" ===============================
+" search path (find)
+" ===============================
+set path+=~/git/**
+"set path+=~/b/**
+
+
+
+" ===============================
+" plugin management (vim-plug)
+" ===============================
+call plug#begin()
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+Plug 'frazrepo/vim-rainbow'
+call plug#end()
+"Reload the file or restart Vim, then you can,
+	":PlugInstall	to install the plugins
+	":PlugUpdate	to install or update the plugins
+	":PlugDiff	to review the changes from the last update
+	":PlugClean	to remove plugins no longer in the list
+
+
+
+" ===============================
+" vim-rainbow
+" ===============================
+au FileType java,c,cpp,objc,objcpp call rainbow#load()
+"#let g:rainbow_active = 1    " to set it globally
+let g:rainbow_ctermfgs = [81, 214, 170, 203, 141]
+
+
+" ===============================
+" fzf
+" ===============================
+let g:fzf_layout = {
+  \ 'window': { 'width': 0.9, 'height': 0.9, 'border': 'rounded' }
+  \ }
+
+" disable/enable preview window:
+let g:fzf_preview_window = ['right:50%', 'ctrl-/']
+
+
+" https://github.com/junegunn/fzf.vim?tab=readme-ov-file
+"  Files [PATH] 	Files (runs $FZF_DEFAULT_COMMAND if defined)
+nnoremap <silent> <leader>f :Files<CR>
+nnoremap <silent> <Leader>r :Rg<CR>
+nnoremap <silent> <Leader>/ :Lines<CR>
+nnoremap <silent> <Leader>? :BLines<CR>
+
+nnoremap <silent> <Leader>ls :Buffers<CR>
+nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <Leader>j :Jumps<CR>
+nnoremap <silent> <Leader>' :Marks<CR>
+nnoremap <silent> <Leader>w :Windows<CR>
+
+nnoremap <silent> <Leader>h :History<CR>
+nnoremap <silent> <Leader>ch :History:<CR>
+nnoremap <silent> <Leader>sh :History/<CR>
+nnoremap <silent> <Leader>H :Helptags<CR>
+nnoremap <silent> <Leader>type :Filetypes<CR>
+nnoremap <silent> <Leader>color :Color<CR>
+" Most commands support CTRL-T / CTRL-X / CTRL-V key bindings 
+" to open in a new tab, a new split, or in a new vertical split
+
+
+
+
+" :GFiles [OPTS] 	Git files (git ls-files)
+" :GFiles? 	Git files (git status)
+" :Tags [PREFIX] 	Tags in the project (ctags -R)
+" :BTags [QUERY] 	Tags in the current buffer
+" :Changes 	Changelist across all open buffers
+" :Marks 	Marks
+" :BMarks 	Marks in the current buffer
+" ch:Locate PATTERN 	locate command output
+" :History 	v:oldfiles and open buffers
+" :History: 	Command history
+" :History/ 	Search history
+" :Snippets 	Snippets (UltiSnips)
+" :Commits [LOG_OPTS] 	Git commits (requires fugitive.vim)
+"nnoremap <silent> <Leader>g :Commits<CR>
+" :BCommits [LOG_OPTS] 	Git commits for the current buffer; visual-select lines to track changes in the range
+" :Commands 	Commands
+" :Maps 	Normal mode mappings
+" :Helptags 	Help tags 1
+" :Filetypes 	File types
+
+
+
+

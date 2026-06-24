@@ -1,0 +1,15 @@
+include "/usr/share/kbd/keymaps/i386/qwerty/us.map.gz"
+
+keycode 58 = Control
+keycode 86 = F70
+
+string F70 = "sudo pacman -Syu\n"
+
+########################################
+# $ showkey
+# $ loadkeys ./*.map
+
+########################################
+
+# NOTE: the include statement can be used to share common
+#       parts of keymap files

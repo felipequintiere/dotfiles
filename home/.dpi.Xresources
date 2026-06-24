@@ -1,0 +1,6 @@
+! scale
+!96 PDI: 1.0x
+!120 DPI: 1.25x
+!144 DPI: 1.5x
+*dpi: 120
+Xft.dpi: 120

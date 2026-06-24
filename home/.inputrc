@@ -1,0 +1,130 @@
+#https://wiki.archlinux.org/title/Readline
+
+set editing-mode emacs
+# sick emacs mode readline shortcuts:
+#
+# C-x C-r             re-read-init-file
+# 	Read and execute the contents of inputrc file.
+#
+# C-@ or M-<space>    set-mark
+# 	Swap the point with the mark.
+#
+# M-0, M-1, ... M-    digit-argument
+# 	Specify the digit to the argument. M– starts a negative argument.
+#
+# M-C-j               vi-editing-mode
+# 	When in emacs mode, switch to vi mode.
+# NOTE:
+# C-e                 emacs-editing-mode
+# 	When in vi mode, switch to emacs mode.
+#
+# C-x C-u or C-/
+
+
+########################################
+# VI editing mode
+
+#set editing-mode vi
+#set show-mode-in-prompt on
+
+$if term=linux
+	set vi-ins-mode-string \1\e[?0c\2
+	set vi-cmd-mode-string \1\e[?8c\2
+$else
+	set vi-ins-mode-string \1\e[6 q\2
+	set vi-cmd-mode-string \1\e[2 q\2
+$endif
+########################################
+
+
+
+########################################
+# KEYBINDS
+# NOTE: use 'cat -v'
+
+# was (unbound) copy-region-as-kill
+"\ew": copy-region-as-kill
+
+# bind -P
+# bind -X
+# NOTE: readline reserves C-x as a prefix
+"\C-xf": dump-functions
+"\C-xv": dump-variables
+"\C-xm": dump-macros
+########################################
+
+
+
+########################################
+# REGION
+
+set enable-active-region on
+########################################
+
+
+
+########################################
+# MACROS
+# NOTE: you can set binds through the cli
+# 	$ bind '"\ew": "\C-e # macro"'
+
+# makes Ctrl+Alt+l append | less to the line and run it
+# NOTE: C-m is equivalent to Enter
+"\e\C-l": "\C-e | less\C-m"
+
+"\e\C-y": "\C-ayes | \C-m"
+
+"\es": "\C-asudo \C-e"
+
+# to send a command in the background with Ctrl+Alt+b,
+# discarding all of its output:
+"\e\C-b": "\C-e > /dev/null 2>&1 &\C-m"
+
+# to check whether or not a key is already assigned
+# C-xf, then search for the sequence \\C-x\\C-<KEY>
+"\C-x\C-b": "\C-anohup \C-e > /dev/null 2>&1 &"
+# NOTE: [command] [arguments] [redirections] [&]
+########################################
+
+
+
+########################################
+# FASTER COMPLETION
+#
+# by default:
+# a single tab attempts to partially complete the current word;
+# if no partial completions are possible, a double tab shows all;
+# possible completions
+
+# it can be changed to a single tab by setting:
+set show-all-if-unmodified on
+
+# or set it such that a single tab will perform both steps:
+# 	partially complete the word
+# 	show all possible completions if it is still ambiguous
+set show-all-if-ambiguous on
+########################################
+
+
+
+
+########################################
+# COLORIZED COMPLETION
+
+# to enable coloring of completion of filenames
+# NOTE: this may cause completion text blink in some
+#       terminals (e.g. xterm)
+set colored-stats On
+
+# append char to indicate type
+set visible-stats On
+
+# mark symlinked directories
+set mark-symlinked-directories On
+
+# color the identical prefix of completion-lists
+set colored-completion-prefix On
+
+# color the common prefix in menu-complete
+set menu-complete-display-prefix On
+########################################

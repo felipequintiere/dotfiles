@@ -1,0 +1,13 @@
+# vim/emacs
+*.swp
+*.swo
+*.swx
+*~
+\#*\#
+.\#*
+
+# emacs
+/config/emacs/bookmarks
+
+# dwm
+dwm/

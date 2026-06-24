@@ -1,0 +1,1254 @@
+#+TITLE: GNU Emacs Config
+#+AUTHOR: rho
+#+DESCRIPTION: my personal Emacs config
+#+STARTUP: overview
+#+STARTUP: latexpreview
+
+~C-h C-h~  'help-for-help'
+~C-h f~    'describe-function'
+~C-h v~    'describe-variable'
+~C-h P~    'describe-package'
+=C-h k=
+
+C-c ;    to disable a section
+:tangle  to disable a block
+
+-----
+
+(local-variable-p 'completions-header-format)
+
+M-\
+and
+M-<SPC>
+
+* interface
+#+begin_src emacs-lisp
+  ;; to avoid the following message:
+  ;; 'Symbolic link to Git-controlled source file; follow link? (yes or no)'
+  (setq-default vc-follow-symlinks t)
+
+  ;; make ESC quit prompts
+  ;;(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; Emacs will not show its default welcome/startup screen when it launches
+  (setq inhibit-startup-message t)
+#+end_src
+
+** theme/font
+#+begin_src emacs-lisp
+  (set-face-attribute 'default nil
+                      :foreground "#ffffff"
+                      :background "#000000")
+
+  (set-face-attribute 'default nil :font "Hack" :height 120)
+#+end_src
+
+** menus/icons/buttons
+#+begin_src emacs-lisp
+  (scroll-bar-mode -1)  ; disables visible scrollbar
+  (tool-bar-mode -1)    ; remove the row of clickable icons like 'open/save'
+  (menu-bar-mode -1)    ; remove the top bar 'File/Edit/Options'
+  ;;(global-tab-line-mode t) ; always shows active buffers
+  ;;(tab-bar-mode t)         ; always shows active tabs
+#+end_src
+
+** fringes
+#+begin_src emacs-lisp
+  ;; fringes:
+  ;; empty strips on the left and right of the text area, it shows:
+  ;; - line continuation indicators
+  ;; - error or warning markers (from tools like LSP or Flycheck)
+  ;; - breakpoints or diff markers
+  (set-fringe-mode 0) ; default is 10
+#+end_src
+
+** misc
+#+begin_src emacs-lisp
+  ;; hides the mouse pointer when it’s not being used.
+  (setq make-pointer-invisible t) ; emacs must be running in graphical mode
+#+end_src
+
+
+** cursor
+#+begin_src emacs-lisp
+  ;;(setq-default cursor-type t) ; the default block cursor
+  ;;(setq-default cursor-type 'bar)
+  (blink-cursor-mode 0)
+
+  ;;	The cursor normally appears in non-selected windows as a
+  ;; non-blinking hollow box.  (For a bar cursor, it instead appears
+  ;; as a thinner bar.)  To turn off cursors in non-selected windows,
+  ;; change the variable
+  ;; ‘cursor-in-non-selected-windows’ to ‘nil’.
+  (setq-default cursor-in-non-selected-windows nil)
+
+  ;;(setq x-setrech-cursor t)
+#+end_src
+
+** highlighting
+#+begin_src emacs-lisp
+   (set-face-attribute 'highlight nil
+     :background "#333333")
+  ;; inverse-video t
+#+end_src
+
+** line
+#+begin_src emacs-lisp
+  ;; highlights the current line
+  ;;(global-hl-line-mode 'toggle)
+  (global-hl-line-mode)
+
+  (setq-default display-line-numbers-width 2)
+
+  (global-display-line-numbers-mode 1)
+  (setq display-line-numbers-type 'visual)
+  (setq display-line-numbers-current-absolute nil)
+
+
+  ;;    In a narrowed buffer (*note Narrowing::) lines are normally numbered
+  ;; starting at the beginning of the narrowing.  However, if you customize
+  ;; the variable ‘display-line-numbers-widen’ to a non-‘nil’ value, line
+  ;; numbers will disregard any narrowing and will start at the first
+  ;; character of the buffer.
+
+
+  ;;    The line numbers are displayed in a special face ‘line-number’.  The
+  ;; current line number is displayed in a different face,
+  ;; ‘line-number-current-line’, so you can make the current line’s number
+  ;; have a distinct appearance, which will help locating the line showing
+  ;; point.  Additional faces ‘line-number-major-tick’ and
+  ;; ‘line-number-minor-tick’ can be used to highlight the line numbers of
+  ;; lines which are a multiple of certain numbers.  Customize
+  ;; ‘display-line-numbers-major-tick’ and ‘display-line-numbers-minor-tick’
+  ;; respectively to set those numbers.
+
+  (set-face-attribute 'line-number nil
+    :foreground "#777777"
+    :background "#000000") ; ':extend t' ?
+
+  (set-face-attribute 'line-number-current-line nil
+    :foreground "#777777"
+    :background "#000000") ; ':extend t' ?
+
+  ;; NOTE: I've used 'C-h o' on 'line-mode' to see its description
+  ;; NOTE: 'C-h o' on 'set-face-attribute'/'line-number'
+        ;; :inverse-video 'set-face-attribute' description
+
+;;  (setq display-line-numbers-major-tick 10)
+;;  (set-face-attribute 'line-number-major-tick nil
+;;    :foreground "#777777"
+;;    :background "#000000")
+
+;;  (setq display-line-numbers-minor-tick 3)
+;;  (set-face-attribute 'line-number-minor-tick nil
+;;    :foreground "#777777"
+;;    :background "#000000")
+#+end_src
+
+** mode-line
+'C-h o' on 'mode-line'
+#+begin_src emacs-lisp
+  (set-face-attribute 'mode-line-active nil
+    :foreground "#ffff00"
+    :background "#222222"
+    :box nil)
+
+  (set-face-attribute 'mode-line-inactive nil
+    :foreground "#777777"
+    :background "#222222"
+    :box nil)
+#+end_src
+
+*** column
+#+begin_src emacs-lisp
+  ;; to always show the column number by default
+  (column-number-mode)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; column count starts from 1 instead of 0
+  (setq column-number-indicator-zero-based nil)
+
+  ;; C-h v 'column-number-indicator-zero-based'
+  ;; This variable is obsolete since 28.1; use
+  ;; ‘mode-line-position-column-format’ instead.
+#+end_src
+
+*** size
+#+begin_src emacs-lisp
+  (size-indication-mode 1)
+#+end_src
+
+*** which-function
+#+begin_src emacs-lisp
+  (require 'which-func)
+  (set-face-attribute 'which-func nil
+  		    :foreground "#ff00ff")
+#+end_src
+
+** minibuffer
+#+begin_src emacs-lisp
+  (set-face-attribute 'minibuffer-prompt nil
+    :foreground "#00ff00"
+    :background "#000000")
+
+;; minibuffer-default-prompt-format
+#+end_src
+
+#+begin_src emacs-lisp
+  (setq completion-show-help nil)
+  ;;(setq completions-header-format nil)
+  ;; default value:
+  ;; #("%s possible completions:
+  ;; " 0 25 (face shadow))
+
+  ;;(setq completions-format 'horizontal)
+  (setq completions-format 'one-column)
+  (setq completions-max-height 20)
+
+  (set-face-attribute 'completions-highlight nil
+    :foreground "#ff00ff"
+    :background "#000000"
+    :box nil)
+#+end_src
+
+** messages
+#+begin_src emacs-lisp
+  ;; when Emacs needs to alert you (like an invalid keypress or reaching the
+  ;; top/bottom of a buffer), it flashes the screen or frame briefly
+  (setq visible-bell t)
+
+  ;; show partially typed keyboard shortcuts in the minibuffer after a very
+  ;; short pause (0.1s)
+  (setq echo-keystrokes 0.1)
+
+  (setq suggest-key-bindings 1)
+#+end_src
+(local-variable-p 'suggest-key-bindings)
+
+** help
+C-N C-h i
+
+#+begin_src emacs-lisp
+  (which-key-mode 1)
+#+end_src
+	M-x shortdoc
+
+** region
+#+begin_src emacs-lisp
+  (set-face-attribute 'region nil
+    :background "#550055")
+#+end_src
+
+NOTE: if a region is active, M-% will work only on that region
+
+
+** speedbar
+#+begin_src emacs-lisp
+  ;; just hook to disable visual lines when using speedbar
+  ;; M-x speedbar
+  (add-hook 'speedbar-mode-hook
+            (lambda ()
+              (display-line-numbers-mode 0)))
+#+end_src
+
+
+* text
+;;(setq-default major-mode 'text-mode)
+;;(setq-default truncate-lines t) ; change this variable
+
+** filling
+#+begin_src emacs-lisp
+  ;; NOTE: to see the value of 'fill-column'
+  ;; fill-column C-x C-e    (its default value is 70)
+  (setq-default fill-column 70)
+
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  ;; NOTE: 'auto-fill-mode' automatically inserts real
+  ;; line breaks when you type past 'fill-column'
+
+  ;;(display-fill-column-indicator-mode 1)
+  (global-display-fill-column-indicator-mode 1)
+#+end_src
+*** about text mode
+   Text mode among other actions, sets the syntax table to work
+conveniently for writers.  In Text mode, Emacs considers an apostrophe
+as part of a word like a letter; but Emacs does not consider a period
+or a space as part of a word.  Thus, ‘M-f’ moves you over ‘it's’.  On
+the other hand, in C mode, ‘M-f’ stops just after the ‘t’ of ‘it's’.
+
+** line wrapping
+#+begin_src emacs-lisp
+  ;; to wrap lines visually at the window edge;
+  ;; follow screen lines, not logical lines
+  (global-visual-line-mode)
+#+end_src
+
+
+** mark
+   Other commands always operate on the region, and have no default
+behavior.  Such commands usually have the word ‘region’ in their names,
+like ‘C-w’ (‘kill-region’) and ‘C-x C-u’ (‘upcase-region’).  If the mark
+is inactive, they operate on the “inactive region”—that is, on the text
+between point and the position at which the mark was last set (*note
+Mark Ring::).  To disable this behavior, change the variable
+‘mark-even-if-inactive’ to ‘nil’.  Then these commands will instead
+signal an error if the mark is inactive.
+#+begin_src emacs-lisp
+  ;;(local-variable-p 'mark-even-if-inactive)
+  (setq mark-even-if-inactive nil)
+#+end_src
+
+-----
+
+mark-ring
+global-mark-ring
+
+C-<SPC>
+C-u C-<SPC>
+C-x C-<SPC>
+
+CRIAR UMA FUNÇÃO PARA DELETAR UM MARK DO MARK RING
+(defun my-delete-current-mark ()
+  (interactive)
+  (when mark-ring
+    (setq mark-ring (cdr mark-ring))
+    (message "Deleted most recent mark")))
+
+-----
+
+#+begin_src emacs-lisp
+  ;; C-x C-x to check where the mark is (exchanges the positions of
+  ;; the point and the mark)
+
+  ;; While Transient Mark mode is off, you can activate it temporarily
+  ;; using ‘C-<SPC> C-<SPC>’ or ‘C-u C-x C-x’
+
+  (transient-mark-mode 1) ; global minor mode
+  ;; [...] One reason you may want to use them is that some commands
+  ;; operate on the entire buffer instead of the region when Transient
+  ;; Mark mode is off.  Enabling Transient Mark mode momentarily gives
+  ;; you a way to use these commands on the region.
+#+end_src
+
+** kill
+* code
+
+[[* filling]]: fill-column 80 ; global-display-fill-column-indicator-mode
+** trailing whitespace
+#+begin_src emacs-lisp
+  (setq-default show-trailing-whitespace t)
+  ;;(setq-default indicate-empty-lines t) ; emacs must be running in graphical mode
+#+end_src
+
+** tabs/indenting
+(local-variable-p 'indent-tabs-mode) maybe I should just use setq
+#+begin_src emacs-lisp
+  (setq-default tab-width 8)
+
+  (setq-default indent-tabs-mode t) ; tabs for indentation
+  ;;(setq-default indent-tabs-mode nil) ; spaces for indentation
+
+  (setq-default tab-always-indent t)
+  ;; 't': hitting TAB always just indents the current line
+  ;; 'nil':  hitting TAB indents the current line if point is at the left margin
+  ;; or in the line’s indentation, otherwise it inserts a "real" TAB character
+  ;; 'complete': TAB first tries to indent the current line, and if the line
+  ;; was already indented, then try to complete the thing at point
+  	;;(setq tab-always-indent 'complete)
+#+end_src
+*** notes
+C-q <TAB>    to insert a =tab character=
+note: it ALWAYS inserts a tab, regardless of the value of 'indent-tabs-mode'
+
+C-M-\        'ident-region'
+M-x tabify
+M-x untabify
+
+C-x <TAB>    (note: I think a region must be active)
+M-i
+
+M-^
+C-M-o
+
+-----
+
+note: 'eletric-indent-mode' is enabled by default
+
+
+** cc mode
+3 getting started
+#+begin_src emacs-lisp
+  (setq-default c-basic-offset 8)
+
+  (setq-default c-default-style '((java-mode . "java")
+                          (awk-mode . "awk")
+                          (other . "linux")))
+  ;; 'C-c .' to change style
+#+end_src
+
+4 commands
+4.1 indentation commands
+#+begin_src emacs-lisp
+  (setq-default c-tab-always-indent t)
+  ;; t: (the default), <TAB> simply indents the current line
+  ;; nil: <TAB> (re)indents the line only if point is to the left of the first
+  ;; non-whitespace character on the line. Otherwise it inserts some
+  ;; whitespace (a tab or an equivalent number of spaces)
+#+end_src
+
+6 config basics
+#+begin_src emacs-lisp
+  (defun meu-cc-mode-common-hook ()
+    ;; my customizations for all of c-mode and related modes
+    (subword-mode 1) ; buffer local minor mode
+    (c-toggle-electric-state 1)
+    (c-toggle-auto-newline 1)
+    (c-toggle-hungry-state 1)
+
+    (setq fill-column 80)
+    (which-function-mode 1))
+  (add-hook 'c-mode-common-hook 'meu-cc-mode-common-hook)
+  ;; you can also use 'subword-mode' in non-CC mode buffers by
+  ;; typing M-x subword-mode
+#+end_src
+	use lambda functions
+
+7
+
+*** hooks
+	c-initialization-hook
+	c-mode-common-hook
+		c-mode-hook
+		c++-mode-hook
+		objc-mode-hook
+		java-mode-hook
+		idl-mode-hook
+		pike-mode-hook
+		awk-mode-hook
+
+*** 4.1 indentation commands
+
+reindenting large sections of code
+	<TAB>  'c-indent-command' indents the current line
+
+-----
+
+CC-mode specific:
+C-M-q    'c-indent-exp'
+C-c C-q  'c-indent-defun'
+C-M-\    'indent-region' (the cc mode version)
+
+C-M-h    'c-mark-function'
+     While not strictly an indentation command, this is useful for
+     marking the current top-level function or class definition as the
+     current region.  As with ‘c-indent-defun’, this command operates on
+     top-level constructs, and can’t be used to mark say, a Java method.
+
+*** 4.2 comment commands
+
+‘C-c C-c’ (‘comment-region’)
+     This command comments out the lines that start in the region.  With
+     a negative argument, it does the opposite: it deletes the comment
+     delimiters from these lines.  *Note (emacs)Multi-Line Comments::,
+     for fuller details.  ‘comment-region’ isn’t actually part of CC
+     Mode; it is given a CC Mode binding for convenience.
+
+M-;
+
+*** 4.3 MOVEMENT COMMANDS
+
+‘C-M-a’    (‘c-beginning-of-defun’) or ESC-C-a (my keyboard sucks!)
+‘C-M-e’    (‘c-end-of-defun’)
+
+M-a    c-beginning-of-statement
+M-e    c-end-of-statement
+	VERY USEFUL
+
+‘C-c C-p’ (‘c-backward-conditional’)
+‘C-c C-n’ (‘c-forward-conditional’)
+
+
+M-x subword-backward
+     These commands move backward or forward to the beginning of the
+     next capitalized word.  With prefix argument N, move N times.  If N
+     is negative, move in the opposite direction.
+
+
+*SUBWORD-MODE*
+	   TYPE ‘C-c C-w’ TO TOGGLE SUBWORD MODE ON AND OFF.  To make the mode
+turn on automatically, put the following code in your ‘.emacs’:
+
+     (add-hook 'c-mode-common-hook
+               (lambda () (subword-mode 1)))
+
+   As a bonus, you can also use ‘subword-mode’ in non-CC Mode buffers by
+typing ‘M-x subword-mode’.
+
+*** 4.4 filling and line breaking commands
+M-q
+M-j
+
+*** 4.5 minor modes
+/: line comment
+\*: block comment
+l: eletric mode
+a: auto-newline mode
+h: hungry delete
+w: subword mode
+	ex.:C/*lahw - comment style block and all the other mode enabled -
+
+toggle commands
+	‘C-c C-k’ (‘c-toggle-comment-style’)
+	‘C-c C-l’ (‘c-toggle-electric-state’)  SICK!
+	‘C-c C-a’ (‘c-toggle-auto-newline’)    SICK
+	‘M-x c-toggle-hungry-state’            OK (good to delete tabs)
+	‘M-x c-toggle-auto-hungry-state’
+	‘C-c C-w’ (‘M-x subword-mode’)         SICK
+	‘M-x c-toggle-syntactic-indentation’
+
+*** 4.10 other commands
+C-c :
+C-c C-z
+
+*** 5 font locking
+5 font locking
+5.2 faces
+	NULL
+5.3 documentation comments
+	see M-x java-mode
+
+The default value for ‘c-doc-comment-style’ is
+‘((java-mode . javadoc) (pike-mode . autodoc) (c-mode . gtkdoc))’.
+
+** eglot
+
+
+
+** eshell
+*** 2 entry points
+
+eshell &optional arg
+	C-N M-x eshell opens or switch to the (new) *eshell*<N>
+
+-----
+
+eshell-command
+
+-----
+
+
+** flymake
+
+** cool commands
+M-j
+
+*M-S-x is SICK!!!*
+	use it more often on a given mode, like CC MODE
+
+
+* packages
+** notes
+M-x   list-packages <RET>
+
+M-x package-install
+M-x package-upgrade
+M-x package-upgrade-all
+
+M-x package-delete
+M-x package-list-packages  ; to see the dependencies
+
+   A package may “require” certain other packages to be installed,
+because it relies on functionality provided by them.  When Emacs
+installs such a package, it also automatically downloads and installs
+any required package that is not already installed. [...]
+
+** general
+#+begin_src emacs-lisp
+  ;;   By default, Emacs downloads packages from two archives: GNU ELPA
+  ;;(https://elpa.gnu.org/) and NonGNU ELPA (https://elpa.nongnu.org/).
+  (setq package-archives
+        '(("gnu"   . "https://elpa.gnu.org/packages/")
+          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+          ("melpa" . "https://melpa.org/packages/")))
+  ;; each list element must have the form ‘(ID . LOCATION)’
+
+  ;; USING 'use-package' MACRO
+  ;; ':ensure' makes use-package ask the Emacs package manager to install
+  ;; a package if it is not already present on your system
+  ;;
+  ;; NOTE: you can customize the user option ‘use-package-always-ensure’
+  ;; to a non-‘nil’ value if you want this behavior to be global for all
+  ;; packages:
+  (require 'use-package-ensure)
+  (setq use-package-always-ensure t)
+  ;;
+  ;; ':defer' packages are only loaded when they are actually needed
+  ;;
+  ;; ':init' to evaluate Lisp _before_ a package is loaded
+  ;; ':config' to execute code _after_ a package is loaded
+#+end_src
+
+
+** ORG-MODE
+
+general
+#+begin_src emacs-lisp
+  ;; C-c C-x C-f 'org-emphasize'
+  (setq org-hide-emphasis-markers t)
+
+  ;;(setq org-pretty-entities t)
+  ;;(setq org-use-sub-superscripts '{})
+
+  (setq org-startup-with-inline-images t)
+#+end_src
+
+LATEX
+#+begin_src emacs-lisp
+  ;;(setq org-startup-with-latex-preview nil)
+  ;;(setq org-preview-latex-default-process 'dvisvgm)
+  (setq org-preview-latex-default-process 'dvipng)
+  ;;
+  (setq org-format-latex-options
+        '(:scale 2.5
+                 :html-scale 2.5
+                 :foreground "White"
+                 :background "Transparent"
+                 :matchers ("$1" "$$" "\\(" "\\[")
+  	       ))
+  ;; 12.5.3 Using CDLaTeX to enter math (read Org Mode manual)
+  ;; you'll need to install ‘cdlatex.el’ and ‘texmathp.el’
+  ;; turn it on/off with 'M-x Org-cdlatex-mode'
+  (use-package cdlatex
+    :ensure t
+    :hook (org-mode . org-cdlatex-mode)
+    )
+  ;; note: textmathp.el comes in AUCTeX
+  (use-package tex
+    :ensure auctex)
+#+end_src
+
+** pdf-tools
+#+begin_src emacs-lisp
+  (use-package pdf-tools
+    :ensure t
+    :config
+    (pdf-tools-install) ; standard activation command
+    ;;(pdf-loader-install) ; on demand loading, leads to faster startup time
+
+    (setq-default pdf-view-display-size 'fit-page)
+
+    (add-hook 'pdf-view-mode-hook
+              (lambda ()
+                (define-key pdf-view-mode-map (kbd "j") #'pdf-view-next-line-or-next-page)
+                (define-key pdf-view-mode-map (kbd "k") #'pdf-view-previous-line-or-previous-page)
+                (define-key pdf-view-mode-map (kbd "l") #'image-forward-hscroll)
+                (define-key pdf-view-mode-map (kbd "h") #'image-backward-hscroll)
+                (define-key pdf-view-mode-map (kbd "g") #'pdf-view-first-page)
+                (define-key pdf-view-mode-map (kbd "G") #'pdf-view-last-page)))
+    ;;:mode ("\\.pdf\\'" . pdf-view-mode) ; to enable
+    :mode ("\\.null\\'" . pdf-view-mode) ; to disable
+    )
+  ;; CUSTOM CONFIGURATION FOR PDF COLOR (PDF-TOOLS)
+  ;;(setq pdf-view-midnight-colors '("#ffffff" . "#000000"))
+  (setq pdf-view-midnight-colors '("#f8f8f2" . "#282a36"))
+  (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
+  ;; it can be activated with C-c C-r m – or M-x pdf-view-midnight-minor-mode
+
+  ;; FIX BLURRY PDFs
+  (setq pdf-view-use-scaling t         ; for pdf-tools
+        pdf-view-use-imagemagick nil)  ; for pdf-tools
+  ;;(setq doc-view-resolution 100)     ; for docview
+  ;; M-x set-variable doc-view-resolution
+  ;; M-x doc-view-clear-cache
+  ;; open the file again, and it should look much clearer
+  ;; (though it'll take longer to load)
+#+end_src
+
+** windmove
+#+begin_src emacs-lisp
+  ;; enable windmove package
+  ;;(windmove-default-keybindings) ; conflicts with org-mode
+  ;; switch windows with S-<left>, S-<right>, S-<up>, S-<down>
+#+end_src
+
+* features
+** scrolling
+
+#+begin_src emacs-lisp
+  ;;(setq scroll-preserve-screen-position t)
+  ;;(setq scroll-conservatively 101)
+  ;;(setq maximum-scroll-margin 0.5)
+  ;;(setq scroll-margin 100)
+
+;; I was using this
+  ;;(setq scroll-margin 8
+  ;;      scroll-conservatively 101
+  ;;      scroll-preserve-screen-position t)
+#+end_src
+
+** autocomplete
+#+begin_src emacs-lisp
+  ;; * autocomplete
+  ;; minibuffer selection (icomplete)
+  (icomplete-mode t) ; default
+  ;; M-x bs-show ; built into Emacs by default
+  ;; M-x ibuffer ; built into Emacs by default
+  ;; note: instead of C-x <LEFT> or C-x <RIGHT>, use C-x b <RET>
+  ;;
+  ;; option 1: minibuffer selection (ido)
+  ;;(ido-mode 1)
+  ;;
+  ;; option 2: minibuffer selection (fido) (Fuzzy search)
+  (fido-mode 1)
+  ;;(fido-vertical-mode 1)
+  (setq completion-styles '(flex))
+  ;; fido is basically ido, but implemented the modern way
+#+end_src
+
+** search
+#+begin_src emacs-lisp
+  ;; slow?
+  ;;(setq search-default-mode 'char-fold-to-regexp)
+  ;;(setq char-fold-symmetric t)
+  ;;	during search, you may use 'ss' instead of 'ß' ; slow?
+  ;; note: apparently, character folding only applies to non-regexp
+  ;;       searches (C-s)
+  ;; note: to get folding-like behaviour in regex search: \(ss\|ß\)
+#+end_src
+
+** eshell
+#+begin_src emacs-lisp
+  ;;(global-font-lock-mode t)
+  ;;
+  ;; making passwords invisible in shell mode
+  ;;(add-hook 'comint-output-filter-functions
+  ;;'comint-watch-for-password-prompt)
+#+end_src
+
+
+
+
+* UNBINDING
+#+begin_src emacs-lisp
+  ;;(keymap-global-unset "C-x f")
+#+end_src
+
+* KEYBINDING
+='C-c= followed by a =single character=
+	strictly reserved for ~individuals own use~
+
+-----
+
+** text
+*** fill-region
+#+begin_src emacs-lisp
+  ;; bind 'C-c e f' to 'fill-region  26.5 Code Alignment
+  (keymap-global-set "C-c e f" 'fill-region)
+
+  ;; NOTE: it uses the value of ' fill-column '
+#+end_src
+
+*** auto-fill-mode
+#+begin_src emacs-lisp
+  (keymap-global-set "C-c e a" 'auto-fill-mode)
+#+end_src
+
+** programming
+*** code alignment
+#+begin_src emacs-lisp
+  ;; bind C-c w a to 'align'  26.5 Code Alignment
+  (keymap-global-set "C-c p a" 'align)
+#+end_src
+
+*** M-x eval-region
+#+begin_src emacs-lisp
+  (keymap-global-set "C-c p e" 'eval-region)
+#+end_src
+
+
+** 'other-window'/'tab-next'
+#+begin_src emacs-lisp
+  ;; bind M-o to 'other-window'
+  (global-set-key (kbd "M-o") 'other-window)
+#+end_src
+
+** show active (tabs/buffers)
+#+begin_src emacs-lisp
+  (keymap-global-set "C-c b" 'tab-line-mode)
+  (keymap-global-set "C-c t" 'tab-bar-mode)
+#+end_src
+
+
+** compare
+#+begin_src emacs-lisp
+  (keymap-global-set "C-c v" 'compare-windows)
+#+end_src
+
+** occur
+#+begin_src emacs-lisp
+  (keymap-global-set "C-c o" 'occur)
+#+end_src
+
+   The ‘occur’ command shows all the lines in the current buffer that
+contain a match for a regular expression.  When the region is active,
+‘occur’ restricts matches to such region.  Otherwise it uses the entire
+buffer.  Matching lines are shown in a buffer called ‘*Occur*’.  That
+buffer serves as a menu to jump to occurrences.
+
+* REBINDING
+** minibuffer complete
+#+begin_src emacs-lisp
+  (keymap-set minibuffer-local-map "C-p" #'minibuffer-previous-completion)
+  (keymap-set minibuffer-local-map "C-n" #'minibuffer-next-completion)
+#+end_src
+=note=: M-p and M-n are still used to select in the history
+
+** buffer-menu
+#+begin_src emacs-lisp
+  ;; Rebind 'C-x C-b' for 'buffer-menu'
+  (keymap-global-set "C-x C-b" 'buffer-menu)
+#+end_src
+
+   By default, ‘C-x C-b’ runs the ‘list-buffers’ command.  This command
+lists your buffers in _another_ window.  Since I almost always want to
+do something in that window, I prefer the ‘buffer-menu’ command, which
+not only lists the buffers, but moves point into that window.
+
+
+* cool stuff
+M-x whitespace-mode
+
+M-x doctor
+
+-----
+
+;; prog-mode-hook
+;; emacs-startup-hook
+
+* =emacs manual=
+   Under X, every time the active region changes, Emacs saves the text
+in the region to the “primary selection”.  This lets you insert that
+text into other X applications with ‘mouse-2’ clicks.  *Note Primary
+Selection::.
+	copy text TO emacs with mouse-2
+
+** screen
+mode line
+
+~--~ no changes
+~**~ the buffer has been modified and not yet saved
+~%*~ the read-only buffer has been modified
+~%%~ otherwise
+
+-----
+
+menu bar
+	F10
+	M-x 'menu-bar-open'
+
+	M-`
+	M-x 'twm-menubar
+note: you can move with C-p, C-n, C-f, C-b
+
+** 7 entering emacs
+   Generally, it is unnecessary and wasteful to start Emacs afresh each
+time you want to edit a file.  The recommended way to use Emacs is to
+start it just once, just after you log in, and do all your editing in
+the same Emacs session.  *Note Files::, for information on visiting more
+than one file.  If you use Emacs this way, the Emacs session accumulates
+valuable context, such as the kill ring, registers, undo history, and
+mark ring data, which together make editing more convenient.  These
+features are described later in the manual.
+
+   To edit a file from another program while Emacs is running, you can
+use the ‘emacsclient’ helper program to open a file in the existing
+Emacs session.  *Note Emacs Server::.
+
+** 8 exiting emacs
+C-z
+     On a text terminal, suspend Emacs; on a graphical display, iconify
+     (or “minimize”) the selected frame (‘suspend-frame’).
+
+   ‘C-x C-c’ behaves specially if you are using Emacs as a server.  If
+you type it from a client frame, it closes the client connection.  *Note
+Emacs Server::.
+
+   Emacs can, optionally, record certain session information when you
+kill it, such as the files you were visiting at the time.  This
+information is then available the next time you start Emacs.  *Note
+Saving Emacs Sessions::.
+
+** 9 basic
+
+<RET> has auto-indentation by default
+=C-j= inserts just a new line without any auto-indentation
+
+NOTE: to turn off auto-indentation for <RET>, disable eletric indent
+mode
+
+-----
+
+‘M-r’
+     Without moving the text on the screen, reposition point on the left
+     margin of the center-most text line of the window; on subsequent
+     consecutive invocations, move point to the left margin of the
+     top-most line, the bottom-most line, and so forth, in cyclic order
+     (‘move-to-window-line-top-bottom’).
+
+     A numeric argument says which screen line to place point on,
+     counting downward from the top of the window (zero means the top
+     line).  A negative argument counts lines up from the bottom (−1
+     means the bottom line).  *Note Arguments::, for more information on
+     numeric arguments.
+
+=PARECE ser uma keybind inútil=
+
+-----
+
+M-g M-g    'goto-line'
+ou
+M-g g
+
+-----
+
+C-o
+C-x C-o
+
+-----
+
+C-x z 'repeat'
+	repeats the previous Emacs command, whatever that was
+e.g.: C-x z z z ...
+
+'repeat-mode'
+'repeate-exit-key'
+'repeat-exit-timeout'
+
+   Only some commands support repetition in ‘repeat-mode’; type
+‘M-x describe-repeat-maps <RET>’ to see which ones.
+
+** 10 minibuffer
+
+C-x f
+	you can append '~' at the end of the current dir and it will change to
+	home automatically
+
+-----
+
+     Find file: /u2/emacs/src//etc/termcap
+
+A double slash causes Emacs to ignore everything before the second slash
+in the pair.
+
+-----
+
+NOTE: You can usually type ‘?’ to see a list of completion alternatives
+
+M-<DOWN>
+M-<UP>
+
+=‘M-v’=
+     While in the minibuffer, select the window showing the ~completion~
+     ~list~.
+
+=‘<TAB>’= / <S-TAB>
+‘<RIGHT>’
+‘<n>’ / <p>
+     In the ~completions buffer~, move to the following completion
+     candidate.
+
+‘q’
+     Quit the completions window and switch to the minibuffer window.
+=‘z’=
+     Kill the completions buffer and delete the window showing it.
+
+** 11 running commands by name
+M-S-x
+works just like ‘M-x’, but instead of listing all (or most) of the commands
+Emacs knows about, it will only list the commands that have been marked as
+“belonging” to the current major mode, or any enabled minor modes.
+
+** 12 =help=
+C-h b    describe binds
+C-h C-q
+C-h e
+C-h m    describe mode
+C-h s    describe syntax
+	~C-h o~
+
+
+-----
+
+NOTE:
+	M-x which-key
+   ‘M-x which-key’ is a global minor mode which helps in discovering
+keymaps.  It displays keybindings following your currently entered
+incomplete command (prefix), in a popup.
+
+-----
+
+C-h a    'apropos-command'
+M-x shortdoc
+
+-----
+
+C-h i    'info'
+C-h 4 i  'info-other-window'
+
+** 12 how to open multiple info pages
+   With a numeric argument N, ‘C-h i’ selects the Info buffer
+‘*info*<N>’.  This is useful if you want to browse multiple Info manuals
+simultaneously.  If you specify just ‘C-u’ as the prefix argument, ‘C-h
+i’ prompts for the name of a documentation file, so you can browse a
+file which doesn’t have an entry in the top-level Info menu.
+
+** 12 C-h l 'view-lossage'
+** 12 C-h e 'view-echo-area-messages'
+** 12 prefix + ?
+   You can get a list of subcommands for a particular prefix key by
+typing ‘C-h’, ‘?’, or <F1> (‘describe-prefix-bindings’) after the prefix
+key.  (There are a few prefix keys for which not all of these keys
+work—those that provide their own bindings for that key.  One of these
+prefix keys is <ESC>, because ‘<ESC> C-h’ and ‘<ESC> ?’ are actually
+‘C-M-h’ (‘mark-defun’) and ‘M-?’ (‘xref-find-references’), respectively.
+However, ‘<ESC> <F1>’ works fine.)
+
+   Finally, ‘M-x describe-keymap’ prompts for the name of a keymap, with
+completion, and displays a listing of all key bindings in that keymap.
+
+
+** 13 mark
+C-SPC
+C-@
+
+C-x C-x
+     Set the mark at point, and activate it; then move point where the
+     MARK used to be (‘exchange-point-and-mark’).
+
+   The region always extends between point and the mark, no matter which
+of them comes earlier in the text; each time you move point, the region
+changes.
+
+-----
+
+C-SPC C-SPC to mark a position in the buffer
+C-u C-SPC jump back there
+
+   Many commands that insert text, such as ‘C-y’ (‘yank’), set the mark
+at the other end of the inserted text, without activating it.  This lets
+you easily return to that position (*note Mark Ring::).  You can tell
+that a command does this when it shows ‘Mark set’ in the echo area.
+
+-----
+
+13.3
+
+M-$
+	check spelling of word
+‘M-$’ (‘ispell-word’) normally checks the spelling of the word at point, but
+it checks the text in the region if the mark is active
+
+C-x r s
+	save a region in the register
+jfdkfjdkf
+
+-----
+
+C-x C-SPC
+	refer to the global mark ring
+
+-----
+
+when transient mark mode is disabled
+C-SPC C-SPC
+C-u C-x C-x
+
+
+** 26 identation
+
+programming modes <TAB>:
+	- indents the current line based on the preceding line; if the
+          region is active, all the lines in the region are indented
+
+	- if point was initially within the current line’s
+          indentation, it is repositioned to the first non-whitespace
+          characters on the line
+
+   If you just want to insert a tab character in the buffer, type ‘C-q
+<TAB>’ (*note Inserting Text::).
+
+-----
+
+C-M-o
+M-i
+
+M-x ident-relative
+
+=M-^=
+
+C-M-\
+     If a numeric argument is supplied, indent every line in the region
+     to that column number.
+
+C-x <TAB>
+     Indent all lines that begin in the region, moving the affected
+     lines as a rigid unit (‘indent-rigidly’).
+e.g.: ~C-<SPC> C-3 C-n C-x <TAB> S-<RIGHT>~
+#+begin_example
+#include <stdio.h>
+
+int main(void) {
+int i = 10;
+float f = 10.f;
+
+printf("i: %d\nf: %f\n",i,f);
+}
+#+end_example
+
+-----
+
+M-x tabify
+M-x untabify
+
+** 26.4 convenience features for identation
+'tab-always-indent'
+	- ‘t’, gives the behavior described in *note Indentation::
+	- ‘complete’, then <TAB> first tries to indent the current
+	  line, and if the line was already indented, it tries to
+          complete the text at point (*note Symbol Completion::)
+	- ‘nil’, then <TAB> indents the current line only if point is
+          at the left margin or in the line’s indentation; otherwise,
+          it inserts a tab character.
+
+** 26.5 code =alignment=
+=M-x align=
+	to align lines in the current =REGION=
+
+M-x align-entire
+
+#+begin_example
+     one = 1;
+     foobarbaz = 2;
+
+     spam = 3;
+     emacs = 4;
+
+when the region covers all of these lines, typing ‘M-x align’ yields:
+
+     one       = 1;
+     foobarbaz = 2;
+
+     spam  = 3;
+     emacs = 4;
+
+On the other hand, ‘M-x align-entire’ aligns all of the lines as a
+single section, so the ‘=’ appears at the same column in all lines:
+
+     one       = 1;
+     foobarbaz = 2;
+
+     spam      = 3;
+     emacs     = 4;
+#+end_example
+
+** 27 filling text
+“Filling” text means breaking it up into lines that fit a specified
+width
+
+M-x =auto-fill-mode=
+	enable/disable it
+
+-----
+
+M-q
+
+=M-x fill-region=
+	M-x fill-region-as-paragraph
+
+=M-x center-line=
+
+C-x f    set-fill-column
+
+-----
+
+   By default, Emacs considers a period followed by two spaces or by a
+newline as the end of a sentence; a period followed by just one space
+indicates an abbreviation, not the end of a sentence.  Accordingly, the
+fill commands will not break a line after a period followed by just one
+space.  If you set the variable ‘sentence-end-double-space’ to ‘nil’,
+the fill commands will break a line after a period followed by one
+space, and put just one space after each period.  *Note Sentences::, for
+other effects and possible drawbacks of this.
+
+   If the variable ‘colon-double-space’ is non-‘nil’, the fill commands
+put two spaces after a colon.
+
+-----
+
+   Emacs can display an indicator in the ‘fill-column’ position using
+the Display fill column indicator mode (*note
+display-fill-column-indicator: Displaying Boundaries.).
+
+-----
+
+=fill prefix=
+	too complex
+
+-----
+
+=adaptative filling=
+
+** 41 using emacs as a server
+a new Emacs process doesn’t share buffers, a command history, or other
+kinds of information with any existing Emacs process.
+
+solve this problem by setting up Emacs as an “edit server”
+
+-----
+
+M-x server-start  (in a existing emacs process)
+=NOTE=: The existing Emacs process is the server; when you exit Emacs,
+the server dies with the Emacs process
+
+
+--daemon (command-line option)
+=NOTE=: it does not open an initial frame
+=NOTE=: it waits for edit requests from =clients=
+
+emacsclient --alternate-editor=""
+=starts an Emacs daemon only if no Emacs daemon is already running=
+
+*** NOTES
+   You can run multiple Emacs servers on the same machine by giving each
+one a unique “server name”, using the variable ‘server-name’.  For
+example, ‘M-x set-variable <RET> server-name <RET> "foo" <RET>’ sets the
+server name to ‘foo’.  The ‘emacsclient’ program can specify a server by
+name, using the ‘-s’ or the ‘-f’ option (*note emacsclient Options::),
+depending on whether or not the server uses a TCP socket (*note TCP
+Emacs server::).
+
+   If you want to run multiple Emacs daemons (*note Initial Options::),
+you can give each daemon its own server name like this:
+
+       emacs --daemon=foo
+
+
+* CUSTOM
+#+begin_src emacs-lisp
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(package-selected-packages '(auctex cdlatex pdf-tools)))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   )
+  (put 'narrow-to-region 'disabled nil)
+#+end_src
