@@ -1,5 +1,4 @@
-#!/bin/bash
-#sudo pacman -s xorg-xset
+#!/bin/sh
 
 # turn off screensaver
 xset s off

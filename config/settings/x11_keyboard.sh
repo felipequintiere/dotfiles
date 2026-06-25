@@ -1,7 +1,7 @@
 #!/bin/sh
 
-readonly USB_DEVICES=$(lsusb)
-readonly DESKTOP_KEYBOARD_ID="17ef:6099"
+USB_DEVICES=$(lsusb)
+DESKTOP_KEYBOARD_ID="17ef:6099"
 
 xset r rate 250 55
 setxkbmap \
@@ -28,5 +28,3 @@ fi
 # that were set before (as saved in root window properties). If you want to
 # replace all previously specified options, use the -option flag with an
 # empty argument first.
-	
-

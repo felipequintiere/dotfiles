@@ -1,4 +1,3 @@
-#!/bin/bash
-# sudo pacman -S xcolor
+#!/bin/sh
 
 xcolor -s
