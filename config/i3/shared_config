@@ -67,6 +67,8 @@ bindsym $mod+Control+w focus mode_toggle
 #
 # toggle between tabbed and split
 bindsym $mod+t layout toggle tabbed split
+# toggle between stacking and split
+bindsym $mod+e layout toggle stacking split
 
 # custom 'alt+tab'
 bindsym $mod+o focus next
@@ -139,7 +141,7 @@ mode "evoker" {
 	bindsym Control+bracketleft mode "default"
 	bindsym Control+g mode "default"
 }
-bindsym $mod+e mode "evoker"
+bindsym $mod+n mode "evoker"
 
 
 

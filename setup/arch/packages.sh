@@ -201,15 +201,16 @@ PACKAGE_GROUPS=(
 for group_name in "${PACKAGE_GROUPS[@]}"; do
 	declare -n group_ref="$group_name"
 
-	echo
 	cat <<-_EOF_
+
 	${BLUE}========================================
 
 	${PURPLE}INSTALLING GROUP: ${group_name}
 	${RED}PACKAGES: ${group_ref[@]}
 	${RESET}
 	_EOF_
-while :; do
+
+	while :; do
 		read -er -p "do you want to proceed? [Y/n] "
 	
 		[ -z "$REPLY" ] && {

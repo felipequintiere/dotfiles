@@ -85,7 +85,7 @@ exec_always --no-startup-id ~/.config/settings/x11_monitor.sh
 exec_always --no-startup-id ~/.config/settings/x11_screensaver.sh
 exec_always --no-startup-id ~/.config/settings/x11_keyboard.sh
 exec_always --no-startup-id ~/.config/settings/x11_mouse.sh
-exec_always --no-startup-id ~/.config/settings/graphics_tablet/x11_tablet_xournallpp.sh
+exec_always --no-startup-id ~/.config/i3/graphics_tablet/x11_tablet_xournallpp.sh
 #exec --no-startup-id /usr/bin/otd-daemon
 exec_always --no-startup-id sh -c "echo '1' > $HOME/.config/i3/.toggle_i3bar_log"
 	# 0: you'll need the 'mode invisible' on the bar config
@@ -173,7 +173,7 @@ mode "menu" {
 	bindsym Control+bracketleft mode "default"
 	bindsym Control+g mode "default"
 }
-bindsym $mod+p mode "menu"
+bindsym $mod+d mode "menu"
 # --------------------------------------
 
 
