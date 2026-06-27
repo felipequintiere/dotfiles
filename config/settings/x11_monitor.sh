@@ -5,10 +5,14 @@ refresh_rate='74.97'
 
 case "$monitor" in 
 	HDMI-A-[0-9])
-		xrandr --output "$monitor" --mode 1920x1080 --rate "$refresh_rate"
+		xrandr --output "$monitor" \
+			--mode 1920x1080 \
+			--rate "$refresh_rate"
 		;;
 	HDMI-[0-9])
-		xrandr --output "$monitor" --mode 1920x1080 --rate "$refresh_rate"
+		xrandr --output "$monitor" \
+			--mode 1920x1080 \
+			--rate "$refresh_rate"
 		;;
 	eDP*)
 		xrandr --output "$monitor" --mode 1920x1080

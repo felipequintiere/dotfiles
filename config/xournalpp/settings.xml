@@ -269,7 +269,7 @@
     <attribute name="count" type="int" value="9"/>
   </data>
   <data name="tools">
-    <attribute name="current" type="string" value="hand"/>
+    <attribute name="current" type="string" value="pen"/>
     <data name="drawArrow"/>
     <data name="drawCoordinateSystem"/>
     <data name="drawDoubleArrow"/>
@@ -298,7 +298,7 @@
       <attribute name="size" type="string" value="MEDIUM"/>
     </data>
     <data name="pen">
-      <attribute name="color" type="hex" value="ffff00"/>
+      <attribute name="color" type="hex" value="ff00ff"/>
       <attribute name="drawingType" type="string" value="strokeRecognizer"/>
       <attribute name="fill" type="int" value="0"/>
       <attribute name="fillAlpha" type="int" value="128"/>
