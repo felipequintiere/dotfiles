@@ -1,2 +1,2 @@
 #!/bin/bash
-xrandr --output HDMI-2 --brightness .75
+xrandr --output HDMI-2 --brightness 1.00

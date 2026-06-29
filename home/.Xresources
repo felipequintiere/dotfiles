@@ -1,10 +1,51 @@
 !run 'xrdb -merge .Xresources' on a console emulator to update '.Xresources'
 !file
 
+! X11 guide vol. 3
+! vol.3, part 3: variables for each client
+
+! resource name syntax
+! basic structure:
+! 	name_of_a_client.variable_name: value
+! 	name_of_a_client*variable_name: value
+! 	*variable_name: value
+! NOTE: the third one applies applies to all instances of all clients
+! NOTE: client-specific variables takes precedence for that client
+
+! object.subobject[.subobject...].attribute: value 
+! 	tight binding: .
+! 	loose binding: *
+! NOTE: initial capitalization is used to distinguish 
+! classnames from instancenames
+! 	XTerm: classname
+! 	xterm: instancename
+
+! Event Translations
+! [object*[subobject...]]translations: #override \
+!      [modifier]<event>: action
+
+
+! xrdb [options] [filename]
+! note: reset xresources with 'xrdb ^M^D'
+! note: 'xrdb -query'
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! GENERAL
+!
+*background: black
+*borderColor: #111111
+*borderWidth: 2
+!*display:
+*font: 9x16
+*foreground: white
+*geometry: 800x600+100+50
+!*name:
+!*reverseVideo:
+!*title:
+
 ! scale
-!96 PDI: 1.0x
-!120 DPI: 1.25x
-!144 DPI: 1.5x
+!96, 120, 144 DPI: 1.0x, 1.25x, 1.5x
 *dpi: 96
 Xft.dpi: 96
 
@@ -50,17 +91,22 @@ XTerm.vt100.saveLines: 4096
 XTerm*audibleBell: false
 XTerm*visualBell: false
 
+! MENU
+! NOTE: xterm has a menu (Control+M1/M2/M3)
+! 	Main options
+! 	VT options
+! 	VT fonts
+
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! XTERM APPEARANCE
 !
-XTerm*font: xft:Monospace:style=Regular:size=12
+XTerm*font: xft:Monospace:style=Regular:size=10
 
-!XTerm.vt100.reverseVideo: true
 ! default colors
 XTerm*background: #000000
 XTerm*foreground: #ffffff
 XTerm*cursorColor: #ff00ff
-!XTerm*cursorColor: #ff8080
+!XTerm.vt100.reverseVideo: true
 
 ! black, red, green, yellow, blue, magenta, cyan, white
 !    normal colors 0-7
@@ -85,82 +131,3 @@ XTerm*color12: #a0cdfd
 XTerm*color13: #e18aed
 XTerm*color14: #49f3f8
 XTerm*color15: #dddddd
-
-
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-! UXTERM
-!
-! note: X(7) RESOURCES
-! By convention, the class name of the application is the same as the program
-! name, but with the first letter capitalized (e.g. Bitmap or Emacs) although
-! some programs that begin with the letter ``x'' also capitalize the second
-! letter for historical reasons.
-
-! make alt key behave as on other terminal emulators
-UXTerm.vt100.metaSendsEscape: true
-
-! fix the backspace key
-UXTerm.vt100.backarrowKey: false
-UXTerm.ttyModes: erase ^?
-! note: press Ctrl+V then Backspace to see whether it sends ^H or ^?
-! note: uxterm may send Backspace as C-h (^H), which can conflict with Emacs
-! help bindings
-
-! copy to PRIMARY and CLIPBOARD
-UXTerm*selectToClipboard: false
-UXTerm*vt100.Translations: #override \
-  Ctrl Shift <Key>C: copy-selection(CLIPBOARD) \n\
-  Ctrl Shift <Key>V: insert-selection(CLIPBOARD)
-
-! enable OSC 52 escape sequence
-! it is used on tmux copy-mode
-UXTerm*disallowedWindowOps: 20,21,SetXprop
-
-! scrolling
-UXTerm.vt100.saveLines: 4096
-
-! enable scrollbar
-!UXTerm.vt100.scrollBar: true
-!UXTerm.vt100.scrollbar.width: 8
-
-! bells
-UXTerm*audibleBell: false
-UXTerm*visualBell: false
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-! UXTERM APPEARANCE
-!
-UXTerm*font: xft:Monospace:style=Regular:size=12
-
-!UXTerm.vt100.reverseVideo: true
-! default colors
-UXTerm*background: #000000
-UXTerm*foreground: #ffffff
-UXTerm*cursorColor: #ff00ff
-!UXTerm*cursorColor: #ff8080
-
-! black, red, green, yellow, blue, magenta, cyan, white
-!    normal colors 0-7
-!    bright colors 8-15
-!
-! normal colors (vim, gcc)
-UXTerm*color0:  #333333
-UXTerm*color1:  #ff2a7a
-UXTerm*color2:  #44ff53
-UXTerm*color3:  #fff155
-UXTerm*color4:  #6db0f8
-UXTerm*color5:  #e768f9
-UXTerm*color6:  #49f3f8
-UXTerm*color7:  #bbbbbb
-!
-! bright colors (prompt)
-UXTerm*color8:  #555555
-UXTerm*color9:  #f64b8b
-UXTerm*color10: #79fd84
-UXTerm*color11: #fcf17d
-UXTerm*color12: #a0cdfd
-UXTerm*color13: #e18aed
-UXTerm*color14: #49f3f8
-UXTerm*color15: #dddddd
-

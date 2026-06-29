@@ -26,7 +26,8 @@ font pango:$font_family $font_size
 # old #be00ee
 # class                 border              background         text                indicator          child_border
 client.focused          $selbordercolor     $selbordercolor    $normbordercolor    $selbordercolor    $selbordercolor
-client.focused_inactive $inacbordercolor    $inacbordercolor   $normbordercolor    $inacbordercolor   $inacbordercolor client.unfocused        $normbordercolor    $normbordercolor   $selbordercolor     $normbordercolor   $normbordercolor
+client.focused_inactive $inacbordercolor    $inacbordercolor   $normbordercolor    $inacbordercolor   $inacbordercolor
+client.unfocused        $normbordercolor    $normbordercolor   $selbordercolor     $normbordercolor   $normbordercolor
 client.urgent           $urgentcolor        $urgentcolor       $normbordercolor    $urgentcolor       $urgentcolor
 client.placeholder      $selbordercolor     $selbordercolor    $normbordercolor    $selbordercolor    $selbordercolor
 client.background       $normbgcolor
@@ -81,8 +82,8 @@ exec --no-startup-id emacs --daemon
 #exec --no-startup-id flameshot
 
 exec --no-startup-id ~/.config/settings/.x11_brightness.sh
-exec_always --no-startup-id ~/.config/settings/x11_monitor.sh
-exec_always --no-startup-id ~/.config/settings/x11_screensaver.sh
+#exec_always --no-startup-id ~/.config/settings/x11_monitor.sh
+#exec_always --no-startup-id ~/.config/settings/x11_screensaver.sh
 exec_always --no-startup-id ~/.config/settings/x11_keyboard.sh
 exec_always --no-startup-id ~/.config/settings/x11_mouse.sh
 exec_always --no-startup-id ~/.config/i3/graphics_tablet/x11_tablet_xournallpp.sh
