@@ -85,8 +85,10 @@ bindsym $mod+f exec ~/.config/i3/.workspace_next.sh
 bindsym $mod+a exec ~/.config/i3/.workspace_previous.sh
 
 # move current focused window to next/previous workspace
-bindsym $mod+Shift+f exec --no-startup-id ~/.config/i3/.move_to_next_workspace.sh
-bindsym $mod+Shift+a exec --no-startup-id ~/.config/i3/.move_to_previous_workspace.sh
+bindsym $mod+Shift+f exec --no-startup-id \
+	~/.config/i3/.move_to_next_workspace.sh
+bindsym $mod+Shift+a exec --no-startup-id \
+	~/.config/i3/.move_to_previous_workspace.sh
 
 
 # come back to last workspace with the same keystroke
@@ -105,17 +107,23 @@ bindsym $mod+Shift+a exec --no-startup-id ~/.config/i3/.move_to_previous_workspa
 # single character marks:
 # read 1 character and mark the current window with this character
 #bindsym $mod+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
-bindsym $mod+m exec i3-input -F 'mark %s' -l 1 -P 'Mark: ', border normal
+bindsym $mod+m exec \
+	i3-input -F 'mark %s' -l 1 -P 'Mark: ', border normal
 
 # read 1 character and go to the window with the character
-bindsym $mod+grave exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
-bindsym $mod+apostrophe exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
+bindsym $mod+grave exec \
+	i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
+bindsym $mod+apostrophe exec \
+	i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Goto: '
 
 # multi character marks:
 set $i_length 10
-bindsym $mod+Shift+m exec i3-input -F 'mark %s' -l $i_length -P 'Mark: ', border normal
-bindsym $mod+Shift+grave exec i3-input -F '[con_mark="%s"] focus' -l $i_length -P 'Goto: '
-bindsym $mod+Shift+apostrophe exec i3-input -F '[con_mark="%s"] focus' -l $i_length -P 'Goto: '
+bindsym $mod+Shift+m exec \
+	i3-input -F 'mark %s' -l $i_length -P 'Mark: ', border normal
+bindsym $mod+Shift+grave exec \
+	i3-input -F '[con_mark="%s"] focus' -l $i_length -P 'Goto: '
+bindsym $mod+Shift+apostrophe exec \
+	i3-input -F '[con_mark="%s"] focus' -l $i_length -P 'Goto: '
 # --------------------------------------
 
 
@@ -148,17 +156,21 @@ bindsym $mod+n mode "evoker"
 # AUX MODES
 mode "x11" {
 	# --------------------------------------
-	# i3 specific settings - not supported by sway, comment out if using sway
+	# i3 specific settings - not supported by sway,
+	# comment out if using sway
 
 	# invert colors (xcalib)
-	# note: on my desktop, a GRUB/systemd parameter is required
-	# refer to 'grub_amdgpu' and 'systemd_amdgpu' in ~/.config/settings/man'
-	bindsym $mod+Shift+r exec --no-startup-id sh -c 'xcalib -i -a', mode default
-	bindsym Shift+r exec --no-startup-id sh -c 'xcalib -i -a', mode default
+	# note: a GRUB/systemd parameter is required!
+	bindsym $mod+Shift+r exec --no-startup-id \
+		sh -c 'xcalib -i -a', mode default
+	bindsym Shift+r exec --no-startup-id \
+		sh -c 'xcalib -i -a', mode default
 	
 	# invert colors (picom)
-	bindsym $mod+Control+r exec --no-startup-id ~/.config/i3/.picom_window_invert_i3.sh, mode default
-	bindsym Control+r exec --no-startup-id ~/.config/i3/.picom_window_invert_i3.sh, mode default
+	bindsym $mod+Control+r exec --no-startup-id \
+		~/.config/i3/.picom_window_invert_i3.sh, mode default
+	bindsym Control+r exec --no-startup-id \
+		~/.config/i3/.picom_window_invert_i3.sh, mode default
 	# --------------------------------------
 	
 	bindsym Return mode "default"
@@ -190,16 +202,16 @@ mode "www"{
 }
 mode "ai"{
 	# open deepseek
-	bindsym $mod+d exec $browser $browser_cmd https://www.chat.deepseek.com/, mode default
-	bindsym d exec firefox $browser_cmd https://chat.deepseek.com/, mode default
+	bindsym $mod+d exec $browser $browser_cmd \
+		https://www.chat.deepseek.com/, mode default
+	bindsym d exec firefox $browser_cmd \
+		https://chat.deepseek.com/, mode default
 
 	# open chatgpt
-	bindsym $mod+c exec $browser $browser_cmd https://chatgpt.com/, mode default
-	bindsym c exec $browser $browser_cmd https://chatgpt.com/, mode default
-
-	# open claude
-	bindsym $mod+v exec $browser $browser_cmd https://chat.chatbotapp.ai/?model=claude, mode default
-	bindsym v exec $browser $browser_cmd https://chat.chatbotapp.ai/?model=claude, mode default
+	bindsym $mod+c exec $browser $browser_cmd \
+		https://chatgpt.com/, mode default
+	bindsym c exec $browser $browser_cmd \
+		https://chatgpt.com/, mode default
 
 	bindsym Return mode "default"
 	bindsym Escape mode "default"

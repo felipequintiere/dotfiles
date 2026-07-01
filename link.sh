@@ -58,7 +58,6 @@ dotfiles_home_dir () { # ~/
 		.gitconfig
 		.xinitrc
 		.Xresources
-		.dpi.Xresources
 	)
 
 	for dotfile in "${home_dotfiles[@]}"; do
@@ -95,6 +94,7 @@ dotfiles_config_dir () { # ~/.config/*
 	local -r conf_dotfiles=( # XDG_CONFIG_HOME DIRETORY
 		i3
 		i3status
+		sway
 		settings
 		zathura
 		#xournalpp
@@ -154,7 +154,7 @@ while :; do
 		if [ "$REPLY" -eq 0 ]; then
 			exit 0
 		elif [ "$REPLY" -eq 1 ]; then
-			set_emacs #set_vim
+			set_emacs # ; set_vim
 		elif [ "$REPLY" -eq 2 ]; then
 			dotfiles_home_dir
 		elif [ "$REPLY" -eq 3 ]; then

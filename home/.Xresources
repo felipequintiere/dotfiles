@@ -37,9 +37,9 @@
 *borderColor: #111111
 *borderWidth: 2
 !*display:
-*font: 9x16
+!*font: 9x16 ! breaks emacs
 *foreground: white
-*geometry: 800x600+100+50
+!*geometry: 800x600+100+50
 !*name:
 !*reverseVideo:
 !*title:
